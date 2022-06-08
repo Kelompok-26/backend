@@ -1,0 +1,238 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "user RESTful API",
+      "description": "API Spec for user RESTful API",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000/api"
+      }
+    ],
+    "paths": {
+      "/users": {
+        "get": {
+          "tags": [
+            "user API"
+          ],
+          "description": "List all users",
+          "summary": "List all users",
+          "responses": {
+            "200": {
+              "description": "Success get all users",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "number"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/user"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": ["user API"],
+          "description": "Create new user",
+          "summary": "Create new user",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success Create user",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code" : {
+                        "type": "number"
+                      },
+                      "status" : {
+                        "type": "string"
+                      },
+                      "data" : {
+                        "$ref": "#/components/schemas/user"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users/{userId}" : {
+        "get" : {
+          "tags": ["user API"],
+          "summary": "Get user by Id",
+          "description": "Get user by id",
+          "parameters": [
+            {
+              "name": "userId",
+              "in": "path",
+              "description": "user Id"
+            }
+          ],
+          "responses": {
+            "200" : {
+              "description": "Success get user",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code" : {
+                        "type": "number"
+                      },
+                      "status" : {
+                        "type": "string"
+                      },
+                      "data" : {
+                        "$ref": "#/components/schemas/user"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put" : {
+          "tags": ["user API"],
+          "summary": "Update user by Id",
+          "description": "Update user by Id",
+          "parameters": [
+            {
+              "name": "userId",
+              "in": "path",
+              "description": "user Id"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200" : {
+              "description": "Success get user",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code" : {
+                        "type": "number"
+                      },
+                      "status" : {
+                        "type": "string"
+                      },
+                      "data" : {
+                        "$ref": "#/components/schemas/user"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "tags": ["user API"],
+          "summary": "Delete user by Id",
+          "description": "Delete user by id",
+          "parameters": [
+            {
+              "name": "userId",
+              "in": "path",
+              "description": "user Id"
+            }
+          ],
+          "responses": {
+            "200" : {
+              "description": "Success delete user",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code" : {
+                        "type": "number"
+                      },
+                      "status" : {
+                        "type": "string"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/user"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "user" : {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "example": "1"
+            },
+            "name": {
+              "type": "string",
+              "example": "alta"
+            },
+            "email": {
+              "type": "string",
+              "example": "alta@gmal.com"
+            },
+            "password": {
+              "type": "string"
+            },
+            "point": {
+              "type": "number",
+              "example": "alta"
+            },
+            "date of birth": {
+              "type": "string"
+            },
+            "account number": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  }
+  
