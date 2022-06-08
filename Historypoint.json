@@ -1,0 +1,236 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "historypoint RESTful API",
+      "description": "API Spec for historypoint RESTful API",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000/api"
+      }
+    ],
+    "paths": {
+      "/historypoints": {
+        "get": {
+          "tags": [
+            "historypoint API"
+          ],
+          "description": "List all historypoints",
+          "summary": "List all historypoints",
+          "responses": {
+            "200": {
+              "description": "Success get all historypoints",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "number"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/historypoint"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": ["historypoint API"],
+          "description": "Create new historypoint",
+          "summary": "Create new historypoint",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/historypoint"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success Create historypoint",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code" : {
+                        "type": "number"
+                      },
+                      "status" : {
+                        "type": "string"
+                      },
+                      "data" : {
+                        "$ref": "#/components/schemas/historypoint"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/historypoints/{historypointId}" : {
+        "get" : {
+          "tags": ["historypoint API"],
+          "summary": "Get historypoint by Id",
+          "description": "Get historypoint by id",
+          "parameters": [
+            {
+              "name": "historypointId",
+              "in": "path",
+              "description": "historypoint Id"
+            }
+          ],
+          "responses": {
+            "200" : {
+              "description": "Success get historypoint",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code" : {
+                        "type": "number"
+                      },
+                      "status" : {
+                        "type": "string"
+                      },
+                      "data" : {
+                        "$ref": "#/components/schemas/historypoint"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put" : {
+          "tags": ["historypoint API"],
+          "summary": "Update historypoint by Id",
+          "description": "Update historypoint by Id",
+          "parameters": [
+            {
+              "name": "historypointId",
+              "in": "path",
+              "description": "historypoint Id"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/historypoint"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200" : {
+              "description": "Success get historypoint",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code" : {
+                        "type": "number"
+                      },
+                      "status" : {
+                        "type": "string"
+                      },
+                      "data" : {
+                        "$ref": "#/components/schemas/historypoint"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "tags": ["historypoint API"],
+          "summary": "Delete historypoint by Id",
+          "description": "Delete historypoint by id",
+          "parameters": [
+            {
+              "name": "historypointId",
+              "in": "path",
+              "description": "historypoint Id"
+            }
+          ],
+          "responses": {
+            "200" : {
+              "description": "Success delete historypoint",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code" : {
+                        "type": "number"
+                      },
+                      "status" : {
+                        "type": "string"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/historypoint"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "historypoint" : {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "example": "1"
+            },
+            "userId": {
+              "type": "number",
+              "example": "1"
+            },
+            "productId": {
+              "type": "number",
+              "example": "1"
+            },
+            "total": {
+              "type": "number",
+              "example": "55000"
+            },
+            "point": {
+              "type": "number",
+              "example": "123"
+            },
+            "date": {
+              "type": "string",
+              "example": "28-11-2022"
+            }
+          }
+        }
+      }
+    }
+  }

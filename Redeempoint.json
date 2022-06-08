@@ -1,0 +1,244 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "redeempoint RESTful API",
+      "description": "API Spec for redeempoint RESTful API",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000/api"
+      }
+    ],
+    "paths": {
+      "/redeempoints": {
+        "get": {
+          "tags": [
+            "redeempoint API"
+          ],
+          "description": "List all redeempoints",
+          "summary": "List all redeempoints",
+          "responses": {
+            "200": {
+              "description": "Success get all redeempoints",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "number"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/redeempoint"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": ["redeempoint API"],
+          "description": "Create new redeempoint",
+          "summary": "Create new redeempoint",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/redeempoint"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success Create redeempoint",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code" : {
+                        "type": "number"
+                      },
+                      "status" : {
+                        "type": "string"
+                      },
+                      "data" : {
+                        "$ref": "#/components/schemas/redeempoint"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/redeempoints/{redeempointId}" : {
+        "get" : {
+          "tags": ["redeempoint API"],
+          "summary": "Get redeempoint by Id",
+          "description": "Get redeempoint by id",
+          "parameters": [
+            {
+              "name": "redeempointId",
+              "in": "path",
+              "description": "redeempoint Id"
+            }
+          ],
+          "responses": {
+            "200" : {
+              "description": "Success get redeempoint",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code" : {
+                        "type": "number"
+                      },
+                      "status" : {
+                        "type": "string"
+                      },
+                      "data" : {
+                        "$ref": "#/components/schemas/redeempoint"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put" : {
+          "tags": ["redeempoint API"],
+          "summary": "Update redeempoint by Id",
+          "description": "Update redeempoint by Id",
+          "parameters": [
+            {
+              "name": "redeempointId",
+              "in": "path",
+              "description": "redeempoint Id"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/redeempoint"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200" : {
+              "description": "Success get redeempoint",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code" : {
+                        "type": "number"
+                      },
+                      "status" : {
+                        "type": "string"
+                      },
+                      "data" : {
+                        "$ref": "#/components/schemas/redeempoint"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "tags": ["redeempoint API"],
+          "summary": "Delete redeempoint by Id",
+          "description": "Delete redeempoint by id",
+          "parameters": [
+            {
+              "name": "redeempointId",
+              "in": "path",
+              "description": "redeempoint Id"
+            }
+          ],
+          "responses": {
+            "200" : {
+              "description": "Success delete redeempoint",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code" : {
+                        "type": "number"
+                      },
+                      "status" : {
+                        "type": "string"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/redeempoint"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "redeempoint" : {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "example": "1"
+            },
+            "userId": {
+              "type": "number",
+              "example": "1"
+            },
+            "name": {
+                "type": "string",
+                "example": "lorem ipsum"
+              },
+            "type": {
+              "type": "string",
+              "example": "e-money"
+            },
+            "nominal": {
+              "type": "number",
+              "example": "55000"
+            },
+            "point": {
+              "type": "number",
+              "example": "123"
+            },
+            "date": {
+              "type": "string",
+              "example": "28-11-2022"
+            },
+            "status": {
+                "type": "string",
+                "example": "success"
+            }
+          }
+        }
+      }
+    }
+  }
