@@ -1,0 +1,241 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "C-loyal RESTful API",
+      "description": "API Spec for product RESTful API",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000/api"
+      }
+    ],
+    "paths": {
+      "/products": {
+        "get": {
+          "tags": [
+            "product API"
+          ],
+          "description": "List all Products",
+          "summary": "List all Products",
+          "responses": {
+            "200": {
+              "description": "Success get all products",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "number"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/product"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": ["product API"],
+          "description": "Create new product",
+          "summary": "Create new product",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/product"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success Create product",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code" : {
+                        "type": "number"
+                      },
+                      "status" : {
+                        "type": "string"
+                      },
+                      "data" : {
+                        "$ref": "#/components/schemas/product"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/products/{productId}" : {
+        "get" : {
+          "tags": ["product API"],
+          "summary": "Get product by Id",
+          "description": "Get product by id",
+          "parameters": [
+            {
+              "name": "productId",
+              "in": "path",
+              "description": "product Id"
+            }
+          ],
+          "responses": {
+            "200" : {
+              "description": "Success get product",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code" : {
+                        "type": "number"
+                      },
+                      "status" : {
+                        "type": "string"
+                      },
+                      "data" : {
+                        "$ref": "#/components/schemas/product"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put" : {
+          "tags": ["product API"],
+          "summary": "Update product by Id",
+          "description": "Update product by Id",
+          "parameters": [
+            {
+              "name": "productId",
+              "in": "path",
+              "description": "product Id"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/product"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200" : {
+              "description": "Success get product",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code" : {
+                        "type": "number"
+                      },
+                      "status" : {
+                        "type": "string"
+                      },
+                      "data" : {
+                        "$ref": "#/components/schemas/product"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "tags": ["product API"],
+          "summary": "Delete product by Id",
+          "description": "Delete product by id",
+          "parameters": [
+            {
+              "name": "productId",
+              "in": "path",
+              "description": "product Id"
+            }
+          ],
+          "responses": {
+            "200" : {
+              "description": "Success delete product",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code" : {
+                        "type": "number"
+                      },
+                      "status" : {
+                        "type": "string"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/product"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "product" : {
+          "type": "object",
+          "properties": {
+            "productid": {
+              "type": "number",
+              "example": "1"
+            },
+            "productType": {
+                "type": "string",
+                "example": "E-Money"
+              },
+            "providername": {
+              "type": "string",
+              "example": "Telkomsel"
+            }, 
+            "productname": {
+                "type": "string",
+                "example": "pulsa 10 gb"
+            },
+            "nominal": {
+              "type": "number",
+              "example": "10000"
+            },
+            "point": {
+              "type": "number",
+              "example": "10"
+            },
+            "stock": {
+                "type": "number",
+                "example": "3"
+            }
+          }
+        }
+      }
+    }
+  }
+  
