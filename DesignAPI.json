@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.3",
     "info": {
-      "title": "user RESTful API",
+      "title": "C-loyal RESTful API",
       "description": "API Spec for user RESTful API",
       "version": "1.0.0"
     },
@@ -14,7 +14,7 @@
       "/users": {
         "get": {
           "tags": [
-            "user API"
+            "User API"
           ],
           "description": "List all users",
           "summary": "List all users",
@@ -46,7 +46,7 @@
           }
         },
         "post": {
-          "tags": ["user API"],
+          "tags": ["User API"],
           "description": "Create new user",
           "summary": "Create new user",
           "requestBody": {
@@ -85,7 +85,7 @@
       },
       "/users/{userId}" : {
         "get" : {
-          "tags": ["user API"],
+          "tags": ["User API"],
           "summary": "Get user by Id",
           "description": "Get user by id",
           "parameters": [
@@ -120,7 +120,7 @@
           }
         },
         "put" : {
-          "tags": ["user API"],
+          "tags": ["User API"],
           "summary": "Update user by Id",
           "description": "Update user by Id",
           "parameters": [
@@ -164,7 +164,7 @@
           }
         },
         "delete": {
-          "tags": ["user API"],
+          "tags": ["User API"],
           "summary": "Delete user by Id",
           "description": "Delete user by id",
           "parameters": [
@@ -202,7 +202,7 @@
       "/products": {
         "get": {
           "tags": [
-            "product API"
+            "Product API"
           ],
           "description": "List all Products",
           "summary": "List all Products",
@@ -234,7 +234,7 @@
           }
         },
         "post": {
-          "tags": ["product API"],
+          "tags": ["Product API"],
           "description": "Create new product",
           "summary": "Create new product",
           "requestBody": {
@@ -271,9 +271,9 @@
           }
         }
       },
-      "/products/{productId}" : {
+      "/products/{productID}" : {
         "get" : {
-          "tags": ["product API"],
+          "tags": ["Product API"],
           "summary": "Get product by Id",
           "description": "Get product by id",
           "parameters": [
@@ -308,7 +308,7 @@
           }
         },
         "put" : {
-          "tags": ["product API"],
+          "tags": ["Product API"],
           "summary": "Update product by Id",
           "description": "Update product by Id",
           "parameters": [
@@ -352,7 +352,7 @@
           }
         },
         "delete": {
-          "tags": ["product API"],
+          "tags": ["Product API"],
           "summary": "Delete product by Id",
           "description": "Delete product by id",
           "parameters": [
@@ -386,14 +386,389 @@
             }
           }
         }
-    }
     },
+    "/transactions": {
+      "get": {
+        "tags": [
+          "History Transaction Point API"
+        ],
+        "description": "List all transactions",
+        "summary": "List all transactions",
+        "responses": {
+          "200": {
+            "description": "Success get all transactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/transaction"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["History Transaction Point API"],
+        "description": "Create new transaction",
+        "summary": "Create new transaction",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/transaction"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success Create transaction",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code" : {
+                      "type": "number"
+                    },
+                    "status" : {
+                      "type": "string"
+                    },
+                    "data" : {
+                      "$ref": "#/components/schemas/transaction"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/{transactionId}" : {
+      "get" : {
+        "tags": ["History Transaction Point API"],
+        "summary": "Get transaction by Id",
+        "description": "Get transaction by id",
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "description": "transaction Id"
+          }
+        ],
+        "responses": {
+          "200" : {
+            "description": "Success get transaction",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code" : {
+                      "type": "number"
+                    },
+                    "status" : {
+                      "type": "string"
+                    },
+                    "data" : {
+                      "$ref": "#/components/schemas/transaction"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags": ["History Transaction Point API"],
+        "summary": "Update transaction by Id",
+        "description": "Update transaction by Id",
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "description": "transaction Id"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/transaction"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200" : {
+            "description": "Success get transaction",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code" : {
+                      "type": "number"
+                    },
+                    "status" : {
+                      "type": "string"
+                    },
+                    "data" : {
+                      "$ref": "#/components/schemas/transaction"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["History Transaction Point API"],
+        "summary": "Delete transaction by Id",
+        "description": "Delete transaction by id",
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "description": "transaction Id"
+          }
+        ],
+        "responses": {
+          "200" : {
+            "description": "Success delete transaction",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code" : {
+                      "type": "number"
+                    },
+                    "status" : {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/transaction"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },"/redeems": {
+      "get": {
+        "tags": [
+          "Redeem for Point API"
+        ],
+        "description": "List all redeems",
+        "summary": "List all redeems",
+        "responses": {
+          "200": {
+            "description": "Success get all redeems",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/redeem"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Redeem for Point API"],
+        "description": "Create new redeem",
+        "summary": "Create new redeem",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/redeem"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success Create redeem",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code" : {
+                      "type": "number"
+                    },
+                    "status" : {
+                      "type": "string"
+                    },
+                    "data" : {
+                      "$ref": "#/components/schemas/redeem"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/redeems/{redeemId}" : {
+      "get" : {
+        "tags": ["Redeem for Point API"],
+        "summary": "Get redeem by Id",
+        "description": "Get redeem by id",
+        "parameters": [
+          {
+            "name": "redeemId",
+            "in": "path",
+            "description": "redeem Id"
+          }
+        ],
+        "responses": {
+          "200" : {
+            "description": "Success get redeem",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code" : {
+                      "type": "number"
+                    },
+                    "status" : {
+                      "type": "string"
+                    },
+                    "data" : {
+                      "$ref": "#/components/schemas/redeem"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags": ["Redeem for Point API"],
+        "summary": "Update redeem by Id",
+        "description": "Update redeem by Id",
+        "parameters": [
+          {
+            "name": "redeemId",
+            "in": "path",
+            "description": "redeem Id"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/redeem"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200" : {
+            "description": "Success get redeem",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code" : {
+                      "type": "number"
+                    },
+                    "status" : {
+                      "type": "string"
+                    },
+                    "data" : {
+                      "$ref": "#/components/schemas/redeem"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Redeem for Point API"],
+        "summary": "Delete redeem by Id",
+        "description": "Delete redeem by id",
+        "parameters": [
+          {
+            "name": "redeemId",
+            "in": "path",
+            "description": "redeem Id"
+          }
+        ],
+        "responses": {
+          "200" : {
+            "description": "Success delete redeem",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code" : {
+                      "type": "number"
+                    },
+                    "status" : {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/redeem"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
     "components": {
       "schemas": {
         "user" : {
           "type": "object",
           "properties": {
-            "id": {
+            "userID": {
               "type": "number",
               "example": "1"
             },
@@ -406,15 +781,16 @@
               "example": "alta@gmal.com"
             },
             "password": {
-              "type": "string"
+              "type": "string",
+              "example": "123321"
             },
             "point": {
               "type": "number",
-              "example": "alta"
+              "example": "0"
             },
             "date of birth": {
               "type": "string",
-              "example": "01/01/2021"
+              "example": "01/01/2000"
             },
             "account number": {
               "type": "number",
@@ -425,13 +801,13 @@
         "product" : {
           "type": "object",
           "properties": {
-            "productid": {
+            "productID": {
               "type": "number",
               "example": "1"
             },
             "productType": {
                 "type": "string",
-                "example": "E-Money"
+                "example": "Paket Data"
               },
             "providername": {
               "type": "string",
@@ -452,6 +828,68 @@
             "stock": {
                 "type": "number",
                 "example": "3"
+            }
+          }
+        },
+        "transaction" : {
+          "type": "object",
+          "properties": {
+            "transactionID": {
+              "type": "number",
+              "example": "1"
+            },
+            "customerID": {
+                "type": "number",
+                "example": "1"
+            },
+            "productID": {
+                "type": "number",
+                "example": "1"
+            },
+            "total": {
+              "type": "number",
+              "example": "10000"
+            },
+            "point": {
+                "type": "number",
+                "example": "10"
+            },
+            "date": {
+                "type": "number",
+                "example": "01/01/2022"
+            }
+          }
+        },
+        "redeem" : {
+          "type": "object",
+          "properties": {
+            "redeemID": {
+              "type": "number",
+              "example": "1"
+            },
+            "customerID": {
+                "type": "number",
+                "example": "1"
+            },
+            "type": {
+                "type": "string",
+                "example": "cash"
+            },
+            "nominal": {
+              "type": "number",
+              "example": "10000"
+            },
+            "point": {
+                "type": "number",
+                "example": "10"
+            },
+            "date": {
+                "type": "number",
+                "example": "01/01/2022"
+            },
+            "status": {
+                "type": "string",
+                "example": "pending"
             }
           }
         }
