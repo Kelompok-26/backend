@@ -815,7 +815,7 @@
             }, 
             "productname": {
                 "type": "string",
-                "example": "pulsa 10 gb"
+                "example": "paket 10 gb"
             },
             "nominal": {
               "type": "number",
