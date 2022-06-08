@@ -761,6 +761,45 @@
           }
         }
       }
+    },
+    "/admin": {
+      "post": {
+        "tags": ["Admin API"],
+        "description": "Login  admin",
+        "summary": "Login admin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/admin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success Login admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code" : {
+                      "type": "number"
+                    },
+                    "status" : {
+                      "type": "string"
+                    },
+                    "data" : {
+                      "$ref": "#/components/schemas/admin"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
     "components": {
@@ -892,8 +931,21 @@
                 "example": "pending"
             }
           }
+        },
+        "admin" : {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "example": "admin@admin.com"
+            },
+            "password": {
+              "type": "string",
+              "example": "admin123"
+          }
         }
       }
     }
   }
+}
   
