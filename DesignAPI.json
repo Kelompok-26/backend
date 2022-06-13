@@ -793,7 +793,7 @@
                     "data" : {
                       "$ref": "#/components/schemas/admin"
                     }
-                  }
+                  } 
                 }
               }
             }
