@@ -49,6 +49,6 @@ func InitDB() {
 }
 
 func InitMigrate() {
-	DB.AutoMigrate(&models.User{})
+	DB.AutoMigrate(&models.Users{})
 	DB.AutoMigrate(&models.Admin{})
 }
