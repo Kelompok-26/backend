@@ -14,16 +14,15 @@ type User struct {
 	PhoneNumber   int           `gorm:"column:phonenumber" json:"phonenumber"`
 	Password      string        `gorm:"column:password" json:"password"`
 	DateofBirth   time.Time     `json:"-"`
-	Gender        string        `gorm:"column:gender" json:"gender"`
 	Point         int           `gorm:"column:point" json:"point"`
 	AccountNumber int           `gorm:"column:accountnumber" json:"accountnumber"`
 	Transactions  []Transaction `gorm:"foreignKey:UserId"`
 	Redeems       []Redeem      `gorm:"foreignKey:UserId"`
 }
 
-func (User) TableName() string {
-	return "users"
-}
+// func (User) TableName() string {
+// 	return "users"
+// }
 
 type Transaction struct {
 	gorm.Model
