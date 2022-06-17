@@ -1,951 +1,660 @@
-{
-    "openapi": "3.0.3",
-    "info": {
-      "title": "C-loyal RESTful API",
-      "description": "API Spec for user RESTful API",
-      "version": "1.0.0"
-    },
-    "servers": [
-      {
-        "url": "http://localhost:3000/api"
-      }
-    ],
-    "paths": {
-      "/users": {
-        "get": {
-          "tags": [
-            "User API"
-          ],
-          "description": "List all users",
-          "summary": "List all users",
-          "responses": {
-            "200": {
-              "description": "Success get all users",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "code": {
-                        "type": "number"
-                      },
-                      "status": {
-                        "type": "string"
-                      },
-                      "data": {
-                        "type": "array",
-                        "items": {
-                          "$ref": "#/components/schemas/user"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "post": {
-          "tags": ["User API"],
-          "description": "Create new user",
-          "summary": "Create new user",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/user"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Success Create user",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "code" : {
-                        "type": "number"
-                      },
-                      "status" : {
-                        "type": "string"
-                      },
-                      "data" : {
-                        "$ref": "#/components/schemas/user"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/users/{userId}" : {
-        "get" : {
-          "tags": ["User API"],
-          "summary": "Get user by Id",
-          "description": "Get user by id",
-          "parameters": [
-            {
-              "name": "userId",
-              "in": "path",
-              "description": "user Id"
-            }
-          ],
-          "responses": {
-            "200" : {
-              "description": "Success get user",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "code" : {
-                        "type": "number"
-                      },
-                      "status" : {
-                        "type": "string"
-                      },
-                      "data" : {
-                        "$ref": "#/components/schemas/user"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "put" : {
-          "tags": ["User API"],
-          "summary": "Update user by Id",
-          "description": "Update user by Id",
-          "parameters": [
-            {
-              "name": "userId",
-              "in": "path",
-              "description": "user Id"
-            }
-          ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/user"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200" : {
-              "description": "Success get user",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "code" : {
-                        "type": "number"
-                      },
-                      "status" : {
-                        "type": "string"
-                      },
-                      "data" : {
-                        "$ref": "#/components/schemas/user"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "delete": {
-          "tags": ["User API"],
-          "summary": "Delete user by Id",
-          "description": "Delete user by id",
-          "parameters": [
-            {
-              "name": "userId",
-              "in": "path",
-              "description": "user Id"
-            }
-          ],
-          "responses": {
-            "200" : {
-              "description": "Success delete user",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "code" : {
-                        "type": "number"
-                      },
-                      "status" : {
-                        "type": "string"
-                      },
-                      "data": {
-                        "$ref": "#/components/schemas/user"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }, 
-      "/products": {
-        "get": {
-          "tags": [
-            "Product API"
-          ],
-          "description": "List all Products",
-          "summary": "List all Products",
-          "responses": {
-            "200": {
-              "description": "Success get all products",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "code": {
-                        "type": "number"
-                      },
-                      "status": {
-                        "type": "string"
-                      },
-                      "data": {
-                        "type": "array",
-                        "items": {
-                          "$ref": "#/components/schemas/product"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "post": {
-          "tags": ["Product API"],
-          "description": "Create new product",
-          "summary": "Create new product",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/product"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Success Create product",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "code" : {
-                        "type": "number"
-                      },
-                      "status" : {
-                        "type": "string"
-                      },
-                      "data" : {
-                        "$ref": "#/components/schemas/product"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/products/{productID}" : {
-        "get" : {
-          "tags": ["Product API"],
-          "summary": "Get product by Id",
-          "description": "Get product by id",
-          "parameters": [
-            {
-              "name": "productId",
-              "in": "path",
-              "description": "product Id"
-            }
-          ],
-          "responses": {
-            "200" : {
-              "description": "Success get product",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "code" : {
-                        "type": "number"
-                      },
-                      "status" : {
-                        "type": "string"
-                      },
-                      "data" : {
-                        "$ref": "#/components/schemas/product"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "put" : {
-          "tags": ["Product API"],
-          "summary": "Update product by Id",
-          "description": "Update product by Id",
-          "parameters": [
-            {
-              "name": "productId",
-              "in": "path",
-              "description": "product Id"
-            }
-          ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/product"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200" : {
-              "description": "Success get product",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "code" : {
-                        "type": "number"
-                      },
-                      "status" : {
-                        "type": "string"
-                      },
-                      "data" : {
-                        "$ref": "#/components/schemas/product"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "delete": {
-          "tags": ["Product API"],
-          "summary": "Delete product by Id",
-          "description": "Delete product by id",
-          "parameters": [
-            {
-              "name": "productId",
-              "in": "path",
-              "description": "product Id"
-            }
-          ],
-          "responses": {
-            "200" : {
-              "description": "Success delete product",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "code" : {
-                        "type": "number"
-                      },
-                      "status" : {
-                        "type": "string"
-                      },
-                      "data": {
-                        "$ref": "#/components/schemas/product"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-    },
-    "/transactions": {
-      "get": {
-        "tags": [
-          "History Transaction Point API"
-        ],
-        "description": "List all transactions",
-        "summary": "List all transactions",
-        "responses": {
-          "200": {
-            "description": "Success get all transactions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "number"
-                    },
-                    "status": {
-                      "type": "string"
-                    },
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/transaction"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": ["History Transaction Point API"],
-        "description": "Create new transaction",
-        "summary": "Create new transaction",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/transaction"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success Create transaction",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code" : {
-                      "type": "number"
-                    },
-                    "status" : {
-                      "type": "string"
-                    },
-                    "data" : {
-                      "$ref": "#/components/schemas/transaction"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/transactions/{transactionId}" : {
-      "get" : {
-        "tags": ["History Transaction Point API"],
-        "summary": "Get transaction by Id",
-        "description": "Get transaction by id",
-        "parameters": [
-          {
-            "name": "transactionId",
-            "in": "path",
-            "description": "transaction Id"
-          }
-        ],
-        "responses": {
-          "200" : {
-            "description": "Success get transaction",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code" : {
-                      "type": "number"
-                    },
-                    "status" : {
-                      "type": "string"
-                    },
-                    "data" : {
-                      "$ref": "#/components/schemas/transaction"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "tags": ["History Transaction Point API"],
-        "summary": "Update transaction by Id",
-        "description": "Update transaction by Id",
-        "parameters": [
-          {
-            "name": "transactionId",
-            "in": "path",
-            "description": "transaction Id"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/transaction"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200" : {
-            "description": "Success get transaction",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code" : {
-                      "type": "number"
-                    },
-                    "status" : {
-                      "type": "string"
-                    },
-                    "data" : {
-                      "$ref": "#/components/schemas/transaction"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": ["History Transaction Point API"],
-        "summary": "Delete transaction by Id",
-        "description": "Delete transaction by id",
-        "parameters": [
-          {
-            "name": "transactionId",
-            "in": "path",
-            "description": "transaction Id"
-          }
-        ],
-        "responses": {
-          "200" : {
-            "description": "Success delete transaction",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code" : {
-                      "type": "number"
-                    },
-                    "status" : {
-                      "type": "string"
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/transaction"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },"/redeems": {
-      "get": {
-        "tags": [
-          "Redeem for Point API"
-        ],
-        "description": "List all redeems",
-        "summary": "List all redeems",
-        "responses": {
-          "200": {
-            "description": "Success get all redeems",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "number"
-                    },
-                    "status": {
-                      "type": "string"
-                    },
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/redeem"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": ["Redeem for Point API"],
-        "description": "Create new redeem",
-        "summary": "Create new redeem",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/redeem"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success Create redeem",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code" : {
-                      "type": "number"
-                    },
-                    "status" : {
-                      "type": "string"
-                    },
-                    "data" : {
-                      "$ref": "#/components/schemas/redeem"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/redeems/{redeemId}" : {
-      "get" : {
-        "tags": ["Redeem for Point API"],
-        "summary": "Get redeem by Id",
-        "description": "Get redeem by id",
-        "parameters": [
-          {
-            "name": "redeemId",
-            "in": "path",
-            "description": "redeem Id"
-          }
-        ],
-        "responses": {
-          "200" : {
-            "description": "Success get redeem",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code" : {
-                      "type": "number"
-                    },
-                    "status" : {
-                      "type": "string"
-                    },
-                    "data" : {
-                      "$ref": "#/components/schemas/redeem"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "tags": ["Redeem for Point API"],
-        "summary": "Update redeem by Id",
-        "description": "Update redeem by Id",
-        "parameters": [
-          {
-            "name": "redeemId",
-            "in": "path",
-            "description": "redeem Id"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/redeem"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200" : {
-            "description": "Success get redeem",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code" : {
-                      "type": "number"
-                    },
-                    "status" : {
-                      "type": "string"
-                    },
-                    "data" : {
-                      "$ref": "#/components/schemas/redeem"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": ["Redeem for Point API"],
-        "summary": "Delete redeem by Id",
-        "description": "Delete redeem by id",
-        "parameters": [
-          {
-            "name": "redeemId",
-            "in": "path",
-            "description": "redeem Id"
-          }
-        ],
-        "responses": {
-          "200" : {
-            "description": "Success delete redeem",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code" : {
-                      "type": "number"
-                    },
-                    "status" : {
-                      "type": "string"
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/redeem"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin": {
-      "post": {
-        "tags": ["Admin API"],
-        "description": "Login  admin",
-        "summary": "Login admin",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/admin"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success Login admin",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code" : {
-                      "type": "number"
-                    },
-                    "status" : {
-                      "type": "string"
-                    },
-                    "data" : {
-                      "$ref": "#/components/schemas/admin"
-                    }
-                  } 
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-    "components": {
-      "schemas": {
-        "user" : {
-          "type": "object",
-          "properties": {
-            "userID": {
-              "type": "number",
-              "example": "1"
-            },
-            "name": {
-              "type": "string",
-              "example": "alta"
-            },
-            "email": {
-              "type": "string",
-              "example": "alta@gmal.com"
-            },
-            "password": {
-              "type": "string",
-              "example": "123321"
-            },
-            "point": {
-              "type": "number",
-              "example": "0"
-            },
-            "date of birth": {
-              "type": "string",
-              "example": "01/01/2000"
-            },
-            "account number": {
-              "type": "number",
-              "example": "777654"
-            }
-          }
-        }, 
-        "product" : {
-          "type": "object",
-          "properties": {
-            "productID": {
-              "type": "number",
-              "example": "1"
-            },
-            "productType": {
-                "type": "string",
-                "example": "Paket Data"
-              },
-            "providername": {
-              "type": "string",
-              "example": "Telkomsel"
-            }, 
-            "productname": {
-                "type": "string",
-                "example": "paket 10 gb"
-            },
-            "nominal": {
-              "type": "number",
-              "example": "10000"
-            },
-            "point": {
-              "type": "number",
-              "example": "10"
-            },
-            "stock": {
-                "type": "number",
-                "example": "3"
-            }
-          }
-        },
-        "transaction" : {
-          "type": "object",
-          "properties": {
-            "transactionID": {
-              "type": "number",
-              "example": "1"
-            },
-            "customerID": {
-                "type": "number",
-                "example": "1"
-            },
-            "productID": {
-                "type": "number",
-                "example": "1"
-            },
-            "total": {
-              "type": "number",
-              "example": "10000"
-            },
-            "point": {
-                "type": "number",
-                "example": "10"
-            },
-            "date": {
-                "type": "number",
-                "example": "01/01/2022"
-            }
-          }
-        },
-        "redeem" : {
-          "type": "object",
-          "properties": {
-            "redeemID": {
-              "type": "number",
-              "example": "1"
-            },
-            "customerID": {
-                "type": "number",
-                "example": "1"
-            },
-            "type": {
-                "type": "string",
-                "example": "cash"
-            },
-            "nominal": {
-              "type": "number",
-              "example": "10000"
-            },
-            "point": {
-                "type": "number",
-                "example": "10"
-            },
-            "date": {
-                "type": "number",
-                "example": "01/01/2022"
-            },
-            "status": {
-                "type": "string",
-                "example": "pending"
-            }
-          }
-        },
-        "admin" : {
-          "type": "object",
-          "properties": {
-            "email": {
-              "type": "string",
-              "example": "admin@admin.com"
-            },
-            "password": {
-              "type": "string",
-              "example": "admin123"
-          }
-        }
-      }
-    }
-  }
-}
-  
+openapi: 3.0.3
+info:
+  title: C-loyal RESTful API
+  description: API Spec for user RESTful API
+  version: 1.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/Dzaakk/C-loyal/1.0.0
+  - url: http://localhost:3000/api
+paths:
+  /users:
+    get:
+      tags:
+        - User API
+      description: List all users
+      summary: List all users
+      responses:
+        '200':
+          description: Success get all users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/user'
+    post:
+      tags:
+        - User API
+      description: Create new user
+      summary: Create new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+      responses:
+        '200':
+          description: Success Create user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/user'
+  /users/{userId}:
+    get:
+      tags:
+        - User API
+      summary: Get user by Id
+      description: Get user by id
+      parameters:
+        - name: userId
+          schema : 
+            type : integer
+          in: path
+          required: true
+          description: user Id
+      responses:
+        '200':
+          description: Success get user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/user'
+    put:
+      tags:
+        - User API
+      summary: Update user by Id
+      description: Update user by Id
+      parameters:
+        - name: userId
+          schema:
+            type : integer
+          in: path
+          required: true
+          description: user Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+      responses:
+        '200':
+          description: Success get user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/user'
+    delete:
+      tags:
+        - User API
+      summary: Delete user by Id
+      description: Delete user by id
+      parameters:
+        - name: userId
+          schema:
+            type: integer
+          in: path
+          required: true
+          description: user Id
+      responses:
+        '200':
+          description: Success delete user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/user'
+  /products:
+    get:
+      tags:
+        - Product API
+      description: List all Products
+      summary: List all Products
+      responses:
+        '200':
+          description: Success get all products
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product'
+    post:
+      tags:
+        - Product API
+      description: Create new product
+      summary: Create new product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/product'
+      responses:
+        '200':
+          description: Success Create product
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/product'
+  /products/{productId}:
+    get:
+      tags:
+        - Product API
+      summary: Get product by Id
+      description: Get product by id
+      parameters:
+        - name: productId
+          schema:
+            type: integer
+          in: path
+          required: true
+          description: product Id
+      responses:
+        '200':
+          description: Success get product
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/product'
+    put:
+      tags:
+        - Product API
+      summary: Update product by Id
+      description: Update product by Id
+      parameters:
+        - name: productId
+          schema:
+            type: integer
+          in: path
+          required: true
+          description: product Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/product'
+      responses:
+        '200':
+          description: Success get product
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/product'
+    delete:
+      tags:
+        - Product API
+      summary: Delete product by Id
+      description: Delete product by id
+      parameters:
+        - name: productId
+          schema:
+            type: integer
+          in: path
+          required: true
+          description: product Id
+      responses:
+        '200':
+          description: Success delete product
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/product'
+  /transactions:
+    get:
+      tags:
+        - History Transaction Point API
+      description: List all transactions
+      summary: List all transactions
+      responses:
+        '200':
+          description: Success get all transactions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/transaction'
+    post:
+      tags:
+        - History Transaction Point API
+      description: Create new transaction
+      summary: Create new transaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transaction'
+      responses:
+        '200':
+          description: Success Create transaction
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/transaction'
+  /transactions/{transactionId}:
+    get:
+      tags:
+        - History Transaction Point API
+      summary: Get transaction by Id
+      description: Get transaction by id
+      parameters:
+        - name: transactionId
+          schema:
+            type: integer
+          in: path
+          required: true
+          description: transaction Id
+      responses:
+        '200':
+          description: Success get transaction
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/transaction'
+    put:
+      tags:
+        - History Transaction Point API
+      summary: Update transaction by Id
+      description: Update transaction by Id
+      parameters:
+        - name: transactionId
+          schema:
+            type: integer
+          in: path
+          required: true
+          description: transaction Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transaction'
+      responses:
+        '200':
+          description: Success get transaction
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/transaction'
+    delete:
+      tags:
+        - History Transaction Point API
+      summary: Delete transaction by Id
+      description: Delete transaction by id
+      parameters:
+        - name: transactionId
+          schema:
+            type: integer
+          in: path
+          required: true
+          description: transaction Id
+      responses:
+        '200':
+          description: Success delete transaction
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/transaction'
+  /redeems:
+    get:
+      tags:
+        - Redeem for Point API
+      description: List all redeems
+      summary: List all redeems
+      responses:
+        '200':
+          description: Success get all redeems
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/redeem'
+    post:
+      tags:
+        - Redeem for Point API
+      description: Create new redeem
+      summary: Create new redeem
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/redeem'
+      responses:
+        '200':
+          description: Success Create redeem
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/redeem'
+  /redeems/{redeemId}:
+    get:
+      tags:
+        - Redeem for Point API
+      summary: Get redeem by Id
+      description: Get redeem by id
+      parameters:
+        - name: redeemId
+          schema:
+            type: integer
+          in: path
+          required: true
+          description: redeem Id
+      responses:
+        '200':
+          description: Success get redeem
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/redeem'
+    put:
+      tags:
+        - Redeem for Point API
+      summary: Update redeem by Id
+      description: Update redeem by Id
+      parameters:
+        - name: redeemId
+          schema:
+            type: integer
+          in: path
+          required: true
+          description: redeem Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/redeem'
+      responses:
+        '200':
+          description: Success get redeem
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/redeem'
+    delete:
+      tags:
+        - Redeem for Point API
+      summary: Delete redeem by Id
+      description: Delete redeem by id
+      parameters:
+        - name: redeemId
+          schema:
+            type: integer
+          in: path
+          required: true
+          description: redeem Id
+      responses:
+        '200':
+          description: Success delete redeem
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/redeem'
+  /admin:
+    post:
+      tags:
+        - Admin API
+      description: Login  admin
+      summary: Login admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/admin'
+      responses:
+        '200':
+          description: Success Login admin
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/admin'
+components:
+  schemas:
+    user:
+      type: object
+      properties:
+        userID:
+          type: number
+          example: '1'
+        name:
+          type: string
+          example: alta
+        email:
+          type: string
+          example: alta@gmal.com
+        password:
+          type: string
+          example: '123321'
+        point:
+          type: number
+          example: '0'
+        date of birth:
+          type: string
+          example: 01/01/2000
+        account number:
+          type: number
+          example: '777654'
+    product:
+      type: object
+      properties:
+        productID:
+          type: number
+          example: '1'
+        productType:
+          type: string
+          example: Paket Data
+        providername:
+          type: string
+          example: Telkomsel
+        productname:
+          type: string
+          example: paket 10 gb
+        nominal:
+          type: number
+          example: '10000'
+        point:
+          type: number
+          example: '10'
+        stock:
+          type: number
+          example: '3'
+    transaction:
+      type: object
+      properties:
+        transactionID:
+          type: number
+          example: '1'
+        customerID:
+          type: number
+          example: '1'
+        productID:
+          type: number
+          example: '1'
+        total:
+          type: number
+          example: '10000'
+        point:
+          type: number
+          example: '10'
+        date:
+          type: number
+          example: 01/01/2022
+    redeem:
+      type: object
+      properties:
+        redeemID:
+          type: number
+          example: '1'
+        customerID:
+          type: number
+          example: '1'
+        type:
+          type: string
+          example: cash
+        nominal:
+          type: number
+          example: '10000'
+        point:
+          type: number
+          example: '10'
+        date:
+          type: number
+          example: 01/01/2022
+        status:
+          type: string
+          example: pending
+    admin:
+      type: object
+      properties:
+        email:
+          type: string
+          example: admin@admin.com
+        password:
+          type: string
+          example: admin123
