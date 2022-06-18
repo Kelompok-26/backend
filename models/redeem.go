@@ -7,13 +7,13 @@ import (
 )
 
 type Redeem struct {
-	Id        int    `gorm:"column:id" json:"id"`
-	Type      string `gorm:"column:type" json:"type"`
-	Name      string `gorm:"column:name" json:"name"`
-	Nominal   int    `gorm:"column:nominal" json:"nominal"`
-	Point     int    `gorm:"column:point" json:"point"`
-	UserId    int    `json:"-"`
-	User      User   `json:"user" gorm:"foreignKey:UserId;references:Id"`
+	Id        int        `gorm:"column:id" json:"id"`
+	Type      string     `gorm:"column:type" json:"type"`
+	Name      string     `gorm:"column:name" json:"name"`
+	Nominal   int        `gorm:"column:nominal" json:"nominal"`
+	Point     int        `gorm:"column:point" json:"point"`
+	UserId    int        `json:"-"`
+	User      UserRedeem `json:"user" gorm:"foreignKey:UserId;references:Id"`
 	Date      time.Time
 	Status    string         `gorm:"column:status" json:"status"`
 	CreatedAt time.Time      `json:"-"`
@@ -34,6 +34,6 @@ func (Redeem) TableName() string {
 	return "redeem"
 }
 
-func (User) TableName() string {
+func (UserRedeem) TableName() string {
 	return "user"
 }
