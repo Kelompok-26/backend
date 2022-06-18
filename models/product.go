@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type Products struct {
+type Product struct {
 	ProductId    int            `gorm:"column:productid" json:"productid"`
 	TypeProduct  string         `gorm:"column:typeproduct" json:"typeproduct"`
 	ProviderName string         `gorm:"column:providername" json:"providername"`

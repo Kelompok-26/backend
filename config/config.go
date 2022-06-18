@@ -12,7 +12,7 @@ var DB *gorm.DB
 
 func IntialDatabase() {
 	InitDB()
-	InitMigrate()
+	// InitMigrate()
 }
 
 type Config struct {
@@ -27,7 +27,7 @@ func InitDB() {
 
 	config := Config{
 		DB_matkulname: "root",
-		DB_Password:   "",
+		DB_Password:   "gromizk123",
 		DB_Port:       "3306",
 		DB_Host:       "localhost",
 		DB_Name:       "c_loyal",
@@ -49,6 +49,8 @@ func InitDB() {
 }
 
 func InitMigrate() {
-	DB.AutoMigrate(&models.Users{})
+	DB.AutoMigrate(&models.User{})
+	DB.AutoMigrate(&models.Product{})
 	DB.AutoMigrate(&models.Admin{})
+	DB.AutoMigrate(&models.Redeem{})
 }

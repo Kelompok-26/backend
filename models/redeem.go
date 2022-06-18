@@ -6,16 +6,34 @@ import (
 	"gorm.io/gorm"
 )
 
-//redeem for point (-user id)
-type redeems struct {
-	RedeemId  int            `gorm:"column:redeemid" json:"redeemid"`
-	Type      string         `gorm:"column:type" json:"type"`
-	Name      string         `gorm:"column:name" json:"name"`
-	Nominal   int            `gorm:"column:nominal" json:"nominal"`
-	Point     int            `gorm:"column:point" json:"point"`
-	Date      time.Time      `json:"-"`
+type Redeem struct {
+	Id        int    `gorm:"column:id" json:"id"`
+	Type      string `gorm:"column:type" json:"type"`
+	Name      string `gorm:"column:name" json:"name"`
+	Nominal   int    `gorm:"column:nominal" json:"nominal"`
+	Point     int    `gorm:"column:point" json:"point"`
+	UserId    int    `json:"-"`
+	User      User   `json:"user" gorm:"foreignKey:UserId;references:Id"`
+	Date      time.Time
 	Status    string         `gorm:"column:status" json:"status"`
 	CreatedAt time.Time      `json:"-"`
 	UpdatedAt time.Time      `json:"-"`
 	DeletedAt gorm.DeletedAt `gorm:"index"`
+}
+
+type InsertRedeem struct {
+	Type    string `gorm:"column:type" json:"type"`
+	Name    string `gorm:"column:name" json:"name"`
+	Nominal int    `gorm:"column:nominal" json:"nominal"`
+	Point   int    `gorm:"column:point" json:"point"`
+	Status  string `gorm:"column:status" json:"status"`
+	User    int    `json:"user" gorm:"column:user_id"`
+}
+
+func (Redeem) TableName() string {
+	return "redeem"
+}
+
+func (User) TableName() string {
+	return "user"
 }
