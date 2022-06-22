@@ -14,7 +14,7 @@ import (
 // get all users
 func GetAllusercontrollers(c echo.Context) error {
 	var users []models.User
-	if err := config.DB.Find(&users).Error; err != nil {
+	if err := config.DB.Table("user").Find(&users).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
@@ -22,10 +22,10 @@ func GetAllusercontrollers(c echo.Context) error {
 }
 
 // get user by id
-func Getusercontrollers(c echo.Context) error {
+func GetUserControllers(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	user := models.User{}
-	if err := config.DB.First(&user, id).Error; err != nil {
+	if err := config.DB.Table("user").First(&user, id).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
 				"message": "user not found",
@@ -39,11 +39,11 @@ func Getusercontrollers(c echo.Context) error {
 }
 
 // create user by id
-func Createusercontrollers(c echo.Context) error {
+func CreateUserControllers(c echo.Context) error {
 	user := models.User{}
 	c.Bind(&user)
 
-	if err := config.DB.Debug().Create(&user).Error; err != nil {
+	if err := config.DB.Table("user").Debug().Create(&user).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
@@ -51,10 +51,10 @@ func Createusercontrollers(c echo.Context) error {
 }
 
 // delete user by id
-func Deleteusercontrollers(c echo.Context) error {
+func DeleteUserControllers(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	user := models.User{}
-	if err := config.DB.Where("id = ?", id).First(&user).Error; err != nil {
+	if err := config.DB.Table("user").Where("id = ?", id).First(&user).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
 				"message": "user not found",
@@ -64,7 +64,7 @@ func Deleteusercontrollers(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	if err := config.DB.Where("id = ?", id).Delete(&user).Error; err != nil {
+	if err := config.DB.Table("user").Where("id = ?", id).Delete(&user).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
@@ -72,11 +72,11 @@ func Deleteusercontrollers(c echo.Context) error {
 }
 
 // update user by id
-func Updateusercontrollers(c echo.Context) error {
+func UpdateUserControllers(c echo.Context) error {
 	id := c.Param("id")
 	user := models.User{}
 
-	if err := config.DB.First(&user, "id = ?", id).Error; err != nil {
+	if err := config.DB.Table("user").First(&user, "id = ?", id).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
 				"message": "user not found",
@@ -97,7 +97,7 @@ func Updateusercontrollers(c echo.Context) error {
 	user.PhoneNumber = newuser.PhoneNumber
 	user.AccountNumber = newuser.AccountNumber
 	user.Point = newuser.Point
-	if err := config.DB.Where("id = ?", id).Debug().Save(&user).Debug().Error; err != nil {
+	if err := config.DB.Table("user").Where("id = ?", id).Debug().Save(&user).Debug().Error; err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 

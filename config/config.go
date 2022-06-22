@@ -1,7 +1,6 @@
 package config
 
 import (
-	"backend/models"
 	"fmt"
 
 	"gorm.io/driver/mysql"
@@ -16,25 +15,25 @@ func IntialDatabase() {
 }
 
 type Config struct {
-	DB_matkulname string
-	DB_Password   string
-	DB_Port       string
-	DB_Host       string
-	DB_Name       string
+	DB_Username string
+	DB_Password string
+	DB_Port     string
+	DB_Host     string
+	DB_Name     string
 }
 
 func InitDB() {
 
 	config := Config{
-		DB_matkulname: "root",
-		DB_Password:   "gromizk123",
-		DB_Port:       "3306",
-		DB_Host:       "localhost",
-		DB_Name:       "c_loyal",
+		DB_Username: "root",
+		DB_Password: "gromizk123",
+		DB_Port:     "3306",
+		DB_Host:     "localhost",
+		DB_Name:     "c_loyal",
 	}
 
 	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
-		config.DB_matkulname,
+		config.DB_Username,
 		config.DB_Password,
 		config.DB_Host,
 		config.DB_Port,
@@ -48,9 +47,9 @@ func InitDB() {
 	}
 }
 
-func InitMigrate() {
-	DB.AutoMigrate(&models.User{})
-	DB.AutoMigrate(&models.Product{})
-	DB.AutoMigrate(&models.Admin{})
-	DB.AutoMigrate(&models.Redeem{})
-}
+// func InitMigrate() {
+// 	DB.AutoMigrate(&models.User{})
+// 	DB.AutoMigrate(&models.Product{})
+// 	DB.AutoMigrate(&models.Admin{})
+// 	DB.AutoMigrate(&models.Redeem{})
+// }

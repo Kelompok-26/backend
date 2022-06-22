@@ -10,20 +10,26 @@ func Router() *echo.Echo {
 	e := echo.New()
 
 	e.GET("/user", controllers.GetAllusercontrollers)
-	e.GET("/user/:id", controllers.Getusercontrollers)
-	e.PUT("/user/:id", controllers.Updateusercontrollers)
-	e.POST("/user", controllers.Createusercontrollers)
-	e.DELETE("/user/:id", controllers.Deleteusercontrollers)
+	e.GET("/user/:id", controllers.GetUserControllers)
+	e.PUT("/user/:id", controllers.UpdateUserControllers)
+	e.POST("/user", controllers.CreateUserControllers)
+	e.DELETE("/user/:id", controllers.DeleteUserControllers)
 
-	e.GET("/product", controllers.GetAllproductcontrollers)
-	e.GET("/product/:id", controllers.Getproductcontrollers)
-	e.PUT("/product/:id", controllers.Updateproductcontrollers)
-	e.POST("/product", controllers.Createproductcontrollers)
-	e.DELETE("/product/:id", controllers.Deleteproductcontrollers)
+	e.GET("/product", controllers.GetAllProductControllers)
+	e.GET("/product/:id", controllers.GetProductControllers)
+	e.PUT("/product/:id", controllers.UpdateProductControllers)
+	e.POST("/product", controllers.CreateProductControllers)
+	e.DELETE("/product/:id", controllers.DeleteProductControllers)
 
-	e.GET("/redeem", controllers.GetAllredeemcontrollers)
-	e.GET("/user/redeem/:user_id", controllers.GetredeemByUserIDcontrollers)
-	e.POST("/redeem", controllers.CreateRedeemscontrollers)
+	e.GET("/redeem", controllers.GetAllRedeemControllers)
+	e.GET("/user/redeem/:user_id", controllers.GetRedeemByUserIDControllers)
+	e.POST("/redeem", controllers.CreateRedeemsControllers)
+	e.PUT("/redeem/:id", controllers.UpdateRedeemControllers)
+	e.DELETE("/redeem/:id", controllers.DeleteRedeemControllers)
+
+	e.GET("/transaction", controllers.GetAllTransactionControllers)
+	e.GET("/transaction/:id", controllers.GetTransactionIDControllers)
+	e.POST("/transaction", controllers.CreateTransactionsControllers)
 
 	return e
 }
