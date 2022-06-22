@@ -67,7 +67,7 @@ func CREATEUser(c echo.Context) error {
 }
 
 // EDIT Spesific User Redeem Data "PUT -> http://127.0.0.1:8080/api/redeems/:RID"
-func EDITUser(c echo.Context) error {
+func EDITUserRedeem(c echo.Context) error {
 
 	redeemId, err := strconv.Atoi(c.Param("RID"))
 	if err != nil {

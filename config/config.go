@@ -2,7 +2,6 @@ package config
 
 import (
 	"backend/models"
-	"fmt"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -10,45 +9,18 @@ import (
 
 var DB *gorm.DB
 
-func IntialDatabase() {
-	InitDB()
+func InitDB() {
+	var err error
+	dsn := "root:kozato321@tcp(127.0.0.1:3306)/miniproject?charset=utf8mb4&parseTime=True&loc=Local"
+	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic(err.Error())
+	}
 	InitMigrate()
 }
 
-type Config struct {
-	DB_matkulname string
-	DB_Password   string
-	DB_Port       string
-	DB_Host       string
-	DB_Name       string
-}
-
-func InitDB() {
-
-	config := Config{
-		DB_matkulname: "root",
-		DB_Password:   "",
-		DB_Port:       "3306",
-		DB_Host:       "localhost",
-		DB_Name:       "c_loyal",
-	}
-
-	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
-		config.DB_matkulname,
-		config.DB_Password,
-		config.DB_Host,
-		config.DB_Port,
-		config.DB_Name,
-	)
-
-	var err error
-	DB, err = gorm.Open(mysql.Open(connectionString), &gorm.Config{})
-	if err != nil {
-		panic(err)
-	}
-}
-
 func InitMigrate() {
-	DB.AutoMigrate(&models.Users{})
+	DB.AutoMigrate(&models.User{})
 	DB.AutoMigrate(&models.Admin{})
+	DB.AutoMigrate(&models.Redeem{})
 }
