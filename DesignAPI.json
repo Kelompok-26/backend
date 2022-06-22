@@ -930,6 +930,7 @@
             "type": "number",
             "example": "777654"
           }
+<<<<<<< HEAD
         }
       },
       "product": {
@@ -1020,6 +1021,102 @@
           "status": {
             "type": "string",
             "example": "pending"
+=======
+        }, 
+        "product" : {
+          "type": "object",
+          "properties": {
+            "productID": {
+              "type": "number",
+              "example": "1"
+            },
+            "TransactionId": {
+              "type": "number",
+              "example": "1"
+            },
+            "TypeProduct": {
+                "type": "string",
+                "example": "Paket Data"
+              },
+            "Providername": {
+              "type": "string",
+              "example": "Telkomsel"
+            }, 
+            "ProductName": {
+                "type": "string",
+                "example": "paket 10 gb"
+            },
+            "Nominal": {
+              "type": "number",
+              "example": "10000"
+            },
+            "Point": {
+              "type": "number",
+              "example": "10"
+            },
+            "Stock": {
+                "type": "number",
+                "example": "3"
+            }
+          }
+        },
+        "transaction" : {
+          "type": "object",
+          "properties": {
+            "TransactionID": {
+              "type": "number",
+              "example": "1"
+            },
+            "UserId": {
+                "type": "number",
+                "example": "1"
+            },
+            "Products": {
+                "type": "number",
+                "example": "1"
+            },
+            "date": {
+                "type": "number",
+                "example": "01/01/2022"
+            }
+          }
+        },
+        "redeem" : {
+          "type": "object",
+          "properties": {
+            "RedeemId": {
+              "type": "number",
+              "example": "1"
+            },
+            "UserId": {
+                "type": "number",
+                "example": "1"
+            },
+            "type": {
+                "type": "string",
+                "example": "cash"
+            },
+            "Name": {
+              "type": "string",
+              "example": "beli paket data"
+            },
+            "nominal": {
+              "type": "number",
+              "example": "10000"
+            },
+            "point": {
+                "type": "number",
+                "example": "10"
+            },
+            "date": {
+                "type": "number",
+                "example": "01/01/2022"
+            },
+            "status": {
+                "type": "string",
+                "example": "pending"
+            }
+>>>>>>> 897dead70a1e5602ffbabddda4d34e91a82bcb19
           }
         }
       },
