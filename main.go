@@ -8,7 +8,7 @@ import (
 func main() {
 	e := routers.Router()
 	// start the server, and log if it fails
-	e.Logger.Fatal(e.Start(":8000"))
+	e.Logger.Fatal(e.Start(":8080"))
 }
 
 func init() {
