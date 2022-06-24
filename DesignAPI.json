@@ -11,7 +11,7 @@
       "url": "https://virtserver.swaggerhub.com/Dzaakk/C-loyal/1.0.0"
     },
     {
-      "url": "http://localhost:3000/api"
+      "url": "http://localhost:8080/api"
     }
   ],
   "paths": {
