@@ -99,7 +99,7 @@ func UpdateRedeemControllers(c echo.Context) error {
 	return c.JSON(http.StatusOK, helper.BuildResponse("success update redeem", redeem))
 }
 
-// // GET All User  Redeem Data "GET -> http://127.0.0.1:8080/api/v1/redeems/"
+// // GET All User  Redeem Data "GET -> http://127.0.0.1:3000/api/v1/redeems/"
 // func GETAllusers(c echo.Context) error {
 // 	var redeems []models.Redeem
 // 	if err := config.DB.Find(&redeems).Error; err != nil {
@@ -109,7 +109,7 @@ func UpdateRedeemControllers(c echo.Context) error {
 // 	return c.JSON(http.StatusOK, redeems)
 // }
 
-// // GET Spesific Data Redeem User "GET -> http://127.0.0.1:8080/api/redeems/:RID"
+// // GET Spesific Data Redeem User "GET -> http://127.0.0.1:3000/api/redeems/:RID"
 // func GETSpesUser(c echo.Context) error {
 
 // 	redeemId, err := strconv.Atoi(c.Param("RID"))
@@ -131,7 +131,7 @@ func UpdateRedeemControllers(c echo.Context) error {
 // 	return c.JSON(http.StatusOK, redeem)
 // }
 
-// // CREATE New Redeem "POST -> http://127.0.0.1:8080/api/redeems/"
+// // CREATE New Redeem "POST -> http://127.0.0.1:3000/api/redeems/"
 // // {
 // // 		"Username": "",
 // //     	"Password": "",
@@ -155,7 +155,7 @@ func UpdateRedeemControllers(c echo.Context) error {
 // 	return c.JSON(http.StatusOK, redeem)
 // }
 
-// // EDIT Spesific User Redeem Data "PUT -> http://127.0.0.1:8080/api/redeems/:RID"
+// // EDIT Spesific User Redeem Data "PUT -> http://127.0.0.1:3000/api/redeems/:RID"
 // func EDITUser(c echo.Context) error {
 
 // 	redeemId, err := strconv.Atoi(c.Param("RID"))
