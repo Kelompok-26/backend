@@ -46,3 +46,13 @@ func InitDB() {
 		panic(err)
 	}
 }
+<<<<<<< HEAD
+=======
+
+// func InitMigrate() {
+// 	DB.AutoMigrate(&models.User{})
+// 	DB.AutoMigrate(&models.Product{})
+// 	DB.AutoMigrate(&models.Admin{})
+// 	DB.AutoMigrate(&models.Redeem{})
+// }
+>>>>>>> 850230cf0d87940678b8d6f87617c9f45009acf9

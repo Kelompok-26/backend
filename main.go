@@ -1,13 +1,11 @@
 package main
 
 import (
-	"backend/config"
-	"backend/routes"
+	"backend/routers"
 )
 
 func main() {
-	config.InitDB()
-	e := routes.New()
-	e.Start(":8080")
-
+	e := routers.Router()
+	// start the server, and log if it fails
+	e.Logger.Fatal(e.Start(":8080"))
 }
