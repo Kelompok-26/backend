@@ -123,14 +123,9 @@ func UpdateRedeemControllers(c echo.Context) error {
 // 		fmt.Println(err)
 // 		return c.String(http.StatusInternalServerError, "internal server error")
 
-<<<<<<< HEAD
-// EDIT Spesific User Redeem Data "PUT -> http://127.0.0.1:8080/api/redeems/:RID"
-func EDITUserRedeem(c echo.Context) error {
-=======
 // 	}
 // 	if redeem.ID == 0 {
 // 		return c.String(http.StatusNotFound, "redeem not found")
->>>>>>> 54962e854190a18c51ae3ee07cac22c5c8e940dc
 
 // 	}
 // 	return c.JSON(http.StatusOK, redeem)
