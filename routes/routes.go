@@ -1,4 +1,4 @@
-package routes
+package routers
 
 import (
 	"backend/controllers"
@@ -6,14 +6,30 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func New() *echo.Echo {
+func Router() *echo.Echo {
 	e := echo.New()
 
-	e.POST("api/users/", controllers.CreateUser)
-	e.GET("api/users/", controllers.GetAllUsers)
-	e.GET("api/users/:UID", controllers.GetSpesificUser)
-	e.PUT("/user/update/:id", controllers.EDITUser)
-	e.DELETE("api/users/:UID", controllers.DeleteUser)
+	e.GET("/user", controllers.GetAllusercontrollers)
+	e.GET("/user/:id", controllers.GetUserControllers)
+	e.PUT("/user/:id", controllers.UpdateUserControllers)
+	e.POST("/user", controllers.CreateUserControllers)
+	e.DELETE("/user/:id", controllers.DeleteUserControllers)
+
+	e.GET("/product", controllers.GetAllProductControllers)
+	e.GET("/product/:id", controllers.GetProductControllers)
+	e.PUT("/product/:id", controllers.UpdateProductControllers)
+	e.POST("/product", controllers.CreateProductControllers)
+	e.DELETE("/product/:id", controllers.DeleteProductControllers)
+
+	e.GET("/redeem", controllers.GetAllRedeemControllers)
+	e.GET("/user/redeem/:user_id", controllers.GetRedeemByUserIDControllers)
+	e.POST("/redeem", controllers.CreateRedeemsControllers)
+	e.PUT("/redeem/:id", controllers.UpdateRedeemControllers)
+	e.DELETE("/redeem/:id", controllers.DeleteRedeemControllers)
+
+	e.GET("/transaction", controllers.GetAllTransactionControllers)
+	e.GET("/transaction/:id", controllers.GetTransactionIDControllers)
+	e.POST("/transaction", controllers.CreateTransactionsControllers)
 
 	return e
 }
