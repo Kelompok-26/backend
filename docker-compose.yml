@@ -22,7 +22,7 @@ services:
       - MYSQL_ROOT_PASSWORD=gromizk123
       - MYSQL_DATABASE=c_loyal
     volumes:
-      - dbdata:/var/lib/mysql
+      - ./data/db:/var/lib/mysql
     healthcheck:
       # perintah untuk memastikan bahwa mysql sudah ready
       test: ["CMD", "mysql", "-u", "root",  "-pgromizk123", "-e", "show schemas"]
