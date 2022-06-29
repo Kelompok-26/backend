@@ -9,7 +9,3 @@ func main() {
 	// start the server, and log if it fails
 	e.Logger.Fatal(e.Start(":8080"))
 }
-
-// func init() {
-// 	config.IntialDatabase()
-// }

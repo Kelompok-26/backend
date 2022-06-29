@@ -46,10 +46,3 @@ func InitDB() {
 		panic(err)
 	}
 }
-
-// func InitMigrate() {
-// 	DB.AutoMigrate(&models.User{})
-// 	DB.AutoMigrate(&models.Product{})
-// 	DB.AutoMigrate(&models.Admin{})
-// 	DB.AutoMigrate(&models.Redeem{})
-// }
