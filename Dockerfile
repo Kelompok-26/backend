@@ -8,5 +8,5 @@ RUN go mod download && go mod verify
 
 COPY . .
 RUN go build -v -o app
-
+VOLUME /var/lib/mysql
 CMD ["/usr/src/app/app"]
