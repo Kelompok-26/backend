@@ -9,17 +9,26 @@ import (
 func Router() *echo.Echo {
 	e := echo.New()
 
-	e.GET("/user", controllers.GetAllusercontrollers)
-	e.GET("/user/:id", controllers.GetUserControllers)
-	e.PUT("/user/:id", controllers.UpdateUserControllers)
-	e.POST("/user", controllers.CreateUserControllers)
-	e.DELETE("/user/:id", controllers.DeleteUserControllers)
+	// Users
+	e.POST("/login", controllers.LoginUser)
+	e.POST("/users", controllers.CreateUserControllers)
+	e.GET("/users", controllers.GetAllusercontrollers)
+	e.GET("/users/:uid", controllers.GetUserControllers)
+	e.PUT("/users/:uid", controllers.UpdateUserControllers)
+	e.DELETE("/users/:uid", controllers.DeleteUserControllers)
 
-	e.GET("/product", controllers.GetAllProductControllers)
-	e.GET("/product/:id", controllers.GetProductControllers)
-	e.PUT("/product/:id", controllers.UpdateProductControllers)
-	e.POST("/product", controllers.CreateProductControllers)
-	e.DELETE("/product/:id", controllers.DeleteProductControllers)
+	// Products
+	e.POST("/products", controllers.CreateProductControllers)
+	e.GET("/products", controllers.GetAllProductControllers)
+	e.GET("/products/:pid", controllers.GetProductControllers)
+	e.PUT("/products/:pid", controllers.UpdateProductControllers)
+	e.DELETE("/products/:pid", controllers.DeleteProductControllers)
+
+	// Spesific Products
+	e.GET("/products/PaketData", controllers.GetPaketData)
+	e.GET("/products/Pulsa", controllers.GetPulsa)
+	e.GET("/products/Emoney", controllers.GetEmoney)
+	e.GET("/products/Cashout", controllers.GetCashout)
 
 	e.GET("/redeem", controllers.GetAllRedeemControllers)
 	e.GET("/user/redeem/:user_id", controllers.GetRedeemByUserIDControllers)

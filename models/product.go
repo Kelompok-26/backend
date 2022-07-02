@@ -12,6 +12,7 @@ type Product struct {
 	ProviderName string         `gorm:"column:provider_name" json:"provider_name"`
 	ProductName  string         `gorm:"column:product_name" json:"product_name"`
 	Nominal      int            `gorm:"column:nominal" json:"nominal"`
+	Point        int            `gorm:"column:point" json:"point"`
 	Stock        int            `gorm:"column:stock" json:"stock"`
 	CreatedAt    time.Time      `json:"-"`
 	UpdatedAt    time.Time      `json:"-"`
