@@ -20,6 +20,10 @@ func LoginUser(c echo.Context) error {
 	if err := config.DB.Where("PhoneNumber = ? AND password = ?", user.PhoneNumber, user.Password).First(&user).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
+	if err := config.DB.Where("Email = ? AND password = ?", user.Email, user.Password).First(&user).Error; err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+
 	phoneNumber, _ := strconv.Atoi(user.PhoneNumber)
 	token, err := middleware.CreateToken(user.Id, phoneNumber)
 	if err != nil {
