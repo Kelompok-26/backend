@@ -1,1171 +1,984 @@
 {
-  "openapi": "3.0.3",
-  "info": {
-     "title": "C-loyal RESTful API",
-     "description": "API Spec for user RESTful API",
-     "version": "1.0.0"
-  },
-  "servers": [
-     {
-        "description": "SwaggerHub API Auto Mocking",
-        "url": "https://virtserver.swaggerhub.com/Dzaakk/C-loyal/1.0.0"
-     },
-     {
-        "url": "http://localhost:3000/api"
-     }
-  ],
-  "paths": {
-    "/login": {
-      "post": {
-        "tags": [
-           "Login API"
-        ],
-        "summary": "Login User",
-        "requestBody": {
-          "required": true,
-           "content": {
-              "application/json": {
-                 "schema": {
-                    "properties":{
-                      "PhoneNumber":{
-                        "type": "string",
-                        "example": "1234567890" 
-                      },
-                      "Password": {
-                        "type": "string",
-                        "example":"useruser"
-                      }
-                    }
-                    
-                 }
-              }
-           }
-        },
-        "responses": {
-           "200": {
-              "description": "Success Login",
-              "content": {
-                 "application/json": {
-                    "schema": {
-                       "type": "object",
-                       "properties": {
-                          "token": {
-                            "type" : "string",
-                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQaG9uZU51bWJlciI6IjEyMzQ1Njc4OTAiLCJQYXNzd29yZCI6InVzZXJ1c2VyIn0.gvVXoz3k57LbHlfsnJg4aAFHQ572JKqIm9wkxvHaTG0"
-                          }
-                       }
-                    }
-                 }
-              }
-           },
-           "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Response400"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Invalid email or password",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseInvalidLogin"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Response500"
-                }
-              }
-            }
-          }
-        }
-     }
+    "openapi": "3.0.3",
+    "info": {
+        "title": "C-loyal RESTful API",
+        "description": "API Spec for user RESTful API",
+        "version": "1.0.0"
     },
-     "/users": {
-        "get": {
-           "tags": [
-              "User API"
-           ],
-           "description": "List all users",
-           "summary": "List all users",
-           "responses": {
-              "200": {
-                 "description": "Success get all users",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "type": "array",
-                                "items": {
-                                   "$ref": "#/components/schemas/user"
+    "servers": [
+        {
+            "description": "SwaggerHub API Auto Mocking",
+            "url": "https://virtserver.swaggerhub.com/Dzaakk/C-loyal/1.0.0"
+        },
+        {
+            "url": "http://localhost:8080/api"
+        }
+    ],
+    "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Login User",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "phonenumber": {
+                                        "type": "string",
+                                        "example": "08123321213"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "useruser"
+                                    }
                                 }
-                             }
-                          }
-                       }
+                            }
+                        }
                     }
-                 }
-              }
-           }
-        },
-        "post": {
-           "tags": [
-              "User API"
-           ],
-           "description": "Create new user",
-           "summary": "Create new user",
-           "requestBody": {
-              "content": {
-                 "application/json": {
-                    "schema": {
-                       "$ref": "#/components/schemas/user"
-                    }
-                 }
-              }
-           },
-           "responses": {
-              "200": {
-                 "description": "Success Create user",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "$ref": "#/components/schemas/user"
-                             }
-                          }
-                       }
-                    }
-                 }
-              }
-           }
-        }
-     },
-     "/users/{userId}": {
-        "get": {
-           "tags": [
-              "User API"
-           ],
-           "summary": "Get user by Id",
-           "description": "Get user by id",
-           "parameters": [
-              {
-                 "name": "userId",
-                 "schema": {
-                    "type": "integer"
-                 },
-                 "in": "path",
-                 "required": true,
-                 "description": "user Id"
-              }
-           ],
-           "responses": {
-              "200": {
-                 "description": "Success get user",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "$ref": "#/components/schemas/user"
-                             }
-                          }
-                       }
-                    }
-                 }
-              }
-           }
-        },
-        "put": {
-           "tags": [
-              "User API"
-           ],
-           "summary": "Update user by Id",
-           "description": "Update user by Id",
-           "parameters": [
-              {
-                 "name": "userId",
-                 "schema": {
-                    "type": "integer"
-                 },
-                 "in": "path",
-                 "required": true,
-                 "description": "user Id"
-              }
-           ],
-           "requestBody": {
-              "content": {
-                 "application/json": {
-                    "schema": {
-                       "$ref": "#/components/schemas/user"
-                    }
-                 }
-              }
-           },
-           "responses": {
-              "200": {
-                 "description": "Success get user",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "$ref": "#/components/schemas/user"
-                             }
-                          }
-                       }
-                    }
-                 }
-              }
-           }
-        },
-        "delete": {
-           "tags": [
-              "User API"
-           ],
-           "summary": "Delete user by Id",
-           "description": "Delete user by id",
-           "parameters": [
-              {
-                 "name": "userId",
-                 "schema": {
-                    "type": "integer"
-                 },
-                 "in": "path",
-                 "required": true,
-                 "description": "user Id"
-              }
-           ],
-           "responses": {
-              "200": {
-                 "description": "Success delete user",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             }
-                          }
-                       }
-                    }
-                 }
-              }
-           }
-        }
-     },
-     "/products": {
-        "get": {
-           "tags": [
-              "Product API"
-           ],
-           "description": "List all Products",
-           "summary": "List all Products",
-           "responses": {
-              "200": {
-                 "description": "Success get all products",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "type": "array",
-                                "items": {
-                                   "$ref": "#/components/schemas/product"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZW51bWJlciI6IjA4MTIzMzIxMjEzIiwicGFzc3dvcmQiOiJ1c2VydXNlciJ9.Uz4q8JPPqzWHHpnAh1AO2kEkuOkulcfBBX7xpfexuBw"
+                                        }
+                                    }
                                 }
-                             }
-                          }
-                       }
-                    }
-                 }
-              }
-           }
-        },
-        "post": {
-           "tags": [
-              "Product API"
-           ],
-           "description": "Create new product",
-           "summary": "Create new product",
-           "requestBody": {
-              "content": {
-                 "application/json": {
-                    "schema": {
-                       "$ref": "#/components/schemas/product"
-                    }
-                 }
-              }
-           },
-           "responses": {
-              "200": {
-                 "description": "Success Create product",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "$ref": "#/components/schemas/product"
-                             }
-                          }
-                       }
-                    }
-                 }
-              }
-           }
-        }
-     },
-     "/products/{productId}": {
-        "get": {
-           "tags": [
-              "Product API"
-           ],
-           "summary": "Get product by Id",
-           "description": "Get product by id",
-           "parameters": [
-              {
-                 "name": "productId",
-                 "schema": {
-                    "type": "integer"
-                 },
-                 "in": "path",
-                 "required": true,
-                 "description": "product Id"
-              }
-           ],
-           "responses": {
-              "200": {
-                 "description": "Success get product",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "$ref": "#/components/schemas/product"
-                             }
-                          }
-                       }
-                    }
-                 }
-              }
-           }
-        },
-        "put": {
-           "tags": [
-              "Product API"
-           ],
-           "summary": "Update product by Id",
-           "description": "Update product by Id",
-           "parameters": [
-              {
-                 "name": "productId",
-                 "schema": {
-                    "type": "integer"
-                 },
-                 "in": "path",
-                 "required": true,
-                 "description": "product Id"
-              }
-           ],
-           "requestBody": {
-              "content": {
-                 "application/json": {
-                    "schema": {
-                       "$ref": "#/components/schemas/product"
-                    }
-                 }
-              }
-           },
-           "responses": {
-              "200": {
-                 "description": "Success get product",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "$ref": "#/components/schemas/product"
-                             }
-                          }
-                       }
-                    }
-                 }
-              }
-           }
-        },
-        "delete": {
-           "tags": [
-              "Product API"
-           ],
-           "summary": "Delete product by Id",
-           "description": "Delete product by id",
-           "parameters": [
-              {
-                 "name": "productId",
-                 "schema": {
-                    "type": "integer"
-                 },
-                 "in": "path",
-                 "required": true,
-                 "description": "product Id"
-              }
-           ],
-           "responses": {
-              "200": {
-                 "description": "Success delete product",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "$ref": "#/components/schemas/product"
-                             }
-                          }
-                       }
-                    }
-                 }
-              }
-           }
-        }
-     },
-     "/transactions": {
-        "get": {
-           "tags": [
-              "History Transaction Point API"
-           ],
-           "description": "List all transactions",
-           "summary": "List all transactions",
-           "responses": {
-              "200": {
-                 "description": "Success get all transactions",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "type": "array",
-                                "items": {
-                                   "$ref": "#/components/schemas/transaction"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400"
                                 }
-                             }
-                          }
-                       }
-                    }
-                 }
-              }
-           }
-        },
-        "post": {
-           "tags": [
-              "History Transaction Point API"
-           ],
-           "description": "Create new transaction",
-           "summary": "Create new transaction",
-           "requestBody": {
-              "content": {
-                 "application/json": {
-                    "schema": {
-                       "$ref": "#/components/schemas/transaction"
-                    }
-                 }
-              }
-           },
-           "responses": {
-              "200": {
-                 "description": "Success Create transaction",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "$ref": "#/components/schemas/transaction"
-                             }
-                          }
-                       }
-                    }
-                 }
-              }
-           }
-        }
-     },
-     "/transactions/{transactionId}": {
-        "get": {
-           "tags": [
-              "History Transaction Point API"
-           ],
-           "summary": "Get transaction by Id",
-           "description": "Get transaction by id",
-           "parameters": [
-              {
-                 "name": "transactionId",
-                 "schema": {
-                    "type": "integer"
-                 },
-                 "in": "path",
-                 "required": true,
-                 "description": "transaction Id"
-              }
-           ],
-           "responses": {
-              "200": {
-                 "description": "Success get transaction",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "$ref": "#/components/schemas/transaction"
-                             }
-                          }
-                       }
-                    }
-                 }
-              }
-           }
-        },
-        "put": {
-           "tags": [
-              "History Transaction Point API"
-           ],
-           "summary": "Update transaction by Id",
-           "description": "Update transaction by Id",
-           "parameters": [
-              {
-                 "name": "transactionId",
-                 "schema": {
-                    "type": "integer"
-                 },
-                 "in": "path",
-                 "required": true,
-                 "description": "transaction Id"
-              }
-           ],
-           "requestBody": {
-              "content": {
-                 "application/json": {
-                    "schema": {
-                       "$ref": "#/components/schemas/transaction"
-                    }
-                 }
-              }
-           },
-           "responses": {
-              "200": {
-                 "description": "Success get transaction",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "$ref": "#/components/schemas/transaction"
-                             }
-                          }
-                       }
-                    }
-                 }
-              }
-           }
-        },
-        "delete": {
-           "tags": [
-              "History Transaction Point API"
-           ],
-           "summary": "Delete transaction by Id",
-           "description": "Delete transaction by id",
-           "parameters": [
-              {
-                 "name": "transactionId",
-                 "schema": {
-                    "type": "integer"
-                 },
-                 "in": "path",
-                 "required": true,
-                 "description": "transaction Id"
-              }
-           ],
-           "responses": {
-              "200": {
-                 "description": "Success delete transaction",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "$ref": "#/components/schemas/transaction"
-                             }
-                          }
-                       }
-                    }
-                 }
-              }
-           }
-        }
-     },
-     "/redeems": {
-        "get": {
-           "tags": [
-              "Redeem for Point API"
-           ],
-           "description": "List all redeems",
-           "summary": "List all redeems",
-           "responses": {
-              "200": {
-                 "description": "Success get all redeems",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "type": "array",
-                                "items": {
-                                   "$ref": "#/components/schemas/redeem"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid email or password",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseInvalidLogin"
                                 }
-                             }
-                          }
-                       }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response500"
+                                }
+                            }
+                        }
                     }
-                 }
-              }
-           }
+                }
+            }
         },
-        "post": {
-           "tags": [
-              "Redeem for Point API"
-           ],
-           "description": "Create new redeem",
-           "summary": "Create new redeem",
-           "requestBody": {
-              "content": {
-                 "application/json": {
-                    "schema": {
-                       "$ref": "#/components/schemas/redeem"
+        "/user": {
+            "post": {
+                "description": "User Registration",
+                "security": [
+                    {
+                        "jwtUser": []
                     }
-                 }
-              }
-           },
-           "responses": {
-              "200": {
-                 "description": "Success Create redeem",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "$ref": "#/components/schemas/redeem"
-                             }
-                          }
-                       }
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Create New User",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserReqBody"
+                            }
+                        }
                     }
-                 }
-              }
-           }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseSuccessNoData"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response403"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Email is already used",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseUsedEmail"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response500"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "description": "can only be accessed by admin",
+                "security": [
+                    {
+                        "jwtAdmin": []
+                    }
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get All users",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListUser"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response500"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "description": "Can only be accessed by admin",
+                "security": [
+                    {
+                        "jwtAdmin": []
+                    }
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get User by id",
+                "parameters": [
+                    {
+                        "name": "Id",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        },
+                        "required": true,
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/user"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response403"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response404"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response500"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "can accesed by admin and user",
+                "security": [
+                    {
+                        "jwtAdmin": []
+                    },
+                    {
+                        "jwtUser": []
+                    }
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Edit User Data",
+                "parameters": [
+                    {
+                        "name": "Id",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        },
+                        "required": true,
+                        "in": "path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserReqBody"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseSuccessNoData"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response403"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response404"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response500"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products": {
+            "post": {
+                "description": "Can only accessed by admin",
+                "security": [
+                    {
+                        "jwtAdmin": []
+                    }
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Create new product",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductReqBody"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseSuccessNoData"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response403"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response500"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Get all product",
+                "parameters": [
+                    {
+                        "name": "TypeProduct",
+                        "schema": {
+                            "type": "array"
+                        },
+                        "required": false,
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/product"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response500"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products/{id}": {
+            "put": {
+                "description": "Can only be accesed by admin",
+                "security": [
+                    {
+                        "jwtAdmin": []
+                    }
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Update Product",
+                "parameters": [
+                    {
+                        "name": "Id",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        },
+                        "required": true,
+                        "in": "path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductReqBody"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseSuccessNoData"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response403"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response404"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response500"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Can only accesed by admin",
+                "security": [
+                    {
+                        "jwtAdmin": []
+                    }
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Delete product",
+                "parameters": [
+                    {
+                        "name": "Id",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        },
+                        "required": true,
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseSuccessNoData"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response403"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response404"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response500"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
-     },
-     "/redeems/{redeemId}": {
-        "get": {
-           "tags": [
-              "Redeem for Point API"
-           ],
-           "summary": "Get redeem by Id",
-           "description": "Get redeem by id",
-           "parameters": [
-              {
-                 "name": "redeemId",
-                 "schema": {
-                    "type": "integer"
-                 },
-                 "in": "path",
-                 "required": true,
-                 "description": "redeem Id"
-              }
-           ],
-           "responses": {
-              "200": {
-                 "description": "Success get redeem",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "$ref": "#/components/schemas/redeem"
-                             }
-                          }
-                       }
-                    }
-                 }
-              }
-           }
+    },
+    "components": {
+        "securitySchemes": {
+            "jwtAdmin": {
+                "type": "http",
+                "scheme": "bearer"
+            },
+            "jwtUser": {
+                "type": "http",
+                "scheme": "bearer"
+            }
         },
-        "put": {
-           "tags": [
-              "Redeem for Point API"
-           ],
-           "summary": "Update redeem by Id",
-           "description": "Update redeem by Id",
-           "parameters": [
-              {
-                 "name": "redeemId",
-                 "schema": {
-                    "type": "integer"
-                 },
-                 "in": "path",
-                 "required": true,
-                 "description": "redeem Id"
-              }
-           ],
-           "requestBody": {
-              "content": {
-                 "application/json": {
-                    "schema": {
-                       "$ref": "#/components/schemas/redeem"
-                    }
-                 }
-              }
-           },
-           "responses": {
-              "200": {
-                 "description": "Success get redeem",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "$ref": "#/components/schemas/redeem"
-                             }
-                          }
-                       }
-                    }
-                 }
-              }
-           }
+        "parameters": {
+            "Authorization": {
+                "in": "header",
+                "name": "Authorization",
+                "schema": {
+                    "type": "string"
+                },
+                "description": "JWT bearer token",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZW51bWJlciI6IjA4MTIzMzIxMjEzIiwicGFzc3dvcmQiOiJ1c2VydXNlciJ9.Uz4q8JPPqzWHHpnAh1AO2kEkuOkulcfBBX7xpfexuBw"
+            }
         },
-        "delete": {
-           "tags": [
-              "Redeem for Point API"
-           ],
-           "summary": "Delete redeem by Id",
-           "description": "Delete redeem by id",
-           "parameters": [
-              {
-                 "name": "redeemId",
-                 "schema": {
-                    "type": "integer"
-                 },
-                 "in": "path",
-                 "required": true,
-                 "description": "redeem Id"
-              }
-           ],
-           "responses": {
-              "200": {
-                 "description": "Success delete redeem",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "$ref": "#/components/schemas/redeem"
-                             }
-                          }
-                       }
+        "schemas": {
+            "user": {
+                "type": "object",
+                "properties": {
+                    "Id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "Name": {
+                        "type": "string",
+                        "example": "alta"
+                    },
+                    "Email": {
+                        "type": "string",
+                        "example": "alta@gmal.com"
+                    },
+                    "PhoneNumber": {
+                        "type": "string",
+                        "example": "08123321213"
+                    },
+                    "Password": {
+                        "type": "string",
+                        "example": "123321"
+                    },
+                    "Point": {
+                        "type": "integer",
+                        "example": "0"
+                    },
+                    "DateofBirth": {
+                        "type": "string",
+                        "example": "01/01/2000"
+                    },
+                    "AccountNumber": {
+                        "type": "string",
+                        "example": "777654"
                     }
-                 }
-              }
-           }
+                }
+            },
+            "ListUser": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/user"
+                }
+            },
+            "UserReqBody": {
+                "properties": {
+                    "Name": {
+                        "type": "string",
+                        "example": "alta"
+                    },
+                    "Email": {
+                        "type": "string",
+                        "example": "alta@gmal.com"
+                    },
+                    "PhoneNumber": {
+                        "type": "string",
+                        "example": "08123321213"
+                    },
+                    "Password": {
+                        "type": "string",
+                        "example": "123321"
+                    },
+                    "Point": {
+                        "type": "integer",
+                        "example": "0"
+                    },
+                    "DateofBirth": {
+                        "type": "string",
+                        "example": "01/01/2000"
+                    },
+                    "AccountNumber": {
+                        "type": "string",
+                        "example": "777654"
+                    }
+                }
+            },
+            "product": {
+                "type": "object",
+                "properties": {
+                    "Id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "TypeProduct": {
+                        "type": "string",
+                        "enum": [
+                            "PaketData",
+                            "Pulsa",
+                            "E-Money",
+                            "Cashout"
+                        ],
+                        "example": "PaketData"
+                    },
+                    "ProviderName": {
+                        "type": "string",
+                        "example": "Telkomsel"
+                    },
+                    "ProductName": {
+                        "type": "string",
+                        "example": "paket 10 gb"
+                    },
+                    "Nominal": {
+                        "type": "integer",
+                        "example": "10000"
+                    },
+                    "Point": {
+                        "type": "integer",
+                        "example": "10"
+                    },
+                    "Stock": {
+                        "type": "integer",
+                        "example": "3"
+                    }
+                }
+            },
+            "ListProduct": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/product"
+                }
+            },
+            "ProductReqBody": {
+                "properties": {
+                    "TypeProduct": {
+                        "type": "string",
+                        "example": "Paket Data"
+                    },
+                    "ProviderName": {
+                        "type": "string",
+                        "example": "Telkomsel"
+                    },
+                    "ProductName": {
+                        "type": "string",
+                        "example": "paket 10 gb"
+                    },
+                    "Nominal": {
+                        "type": "integer",
+                        "example": "10000"
+                    },
+                    "Point": {
+                        "type": "integer",
+                        "example": "10"
+                    },
+                    "Stock": {
+                        "type": "integer",
+                        "example": "3"
+                    }
+                }
+            },
+            "transaction": {
+                "type": "object",
+                "properties": {
+                    "transactionID": {
+                        "type": "number",
+                        "example": "1"
+                    },
+                    "customerID": {
+                        "type": "number",
+                        "example": "1"
+                    },
+                    "productID": {
+                        "type": "number",
+                        "example": "1"
+                    },
+                    "total": {
+                        "type": "number",
+                        "example": "10000"
+                    },
+                    "point": {
+                        "type": "number",
+                        "example": "10"
+                    },
+                    "date": {
+                        "type": "number",
+                        "example": "01/01/2022"
+                    }
+                }
+            },
+            "redeem": {
+                "type": "object",
+                "properties": {
+                    "redeemID": {
+                        "type": "number",
+                        "example": "1"
+                    },
+                    "customerID": {
+                        "type": "number",
+                        "example": "1"
+                    },
+                    "type": {
+                        "type": "string",
+                        "example": "cash"
+                    },
+                    "nominal": {
+                        "type": "number",
+                        "example": "10000"
+                    },
+                    "point": {
+                        "type": "number",
+                        "example": "10"
+                    },
+                    "date": {
+                        "type": "number",
+                        "example": "01/01/2022"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "pending"
+                    }
+                }
+            },
+            "admin": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "admin@admin.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "admin123"
+                    }
+                }
+            },
+            "ResponseSuccessNoData": {
+                "description": "Message for success with no data response",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                }
+            },
+            "Response400": {
+                "description": "Message for invalid process",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "example": 400
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Bad Request"
+                    }
+                }
+            },
+            "Response403": {
+                "description": "Message for invalid process",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "example": 403
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Forbidden"
+                    }
+                }
+            },
+            "Response404": {
+                "description": "Message for invalid process",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "example": 404
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Not Found"
+                    }
+                }
+            },
+            "Response500": {
+                "description": "Message for invalid process",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "example": 500
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Internal Server Error"
+                    }
+                }
+            },
+            "ResponseUsedEmail": {
+                "description": "Message if email is already used",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "example": 409
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Email is already used"
+                    }
+                }
+            },
+            "ResponseInvalidLogin": {
+                "description": "Message for invalid login credential",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "example": 401
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Invalid email or password"
+                    }
+                }
+            }
         }
-     },
-     "/admin": {
-        "post": {
-           "tags": [
-              "Admin API"
-           ],
-           "description": "Login  admin",
-           "summary": "Login admin",
-           "requestBody": {
-              "content": {
-                 "application/json": {
-                    "schema": {
-                       "$ref": "#/components/schemas/admin"
-                    }
-                 }
-              }
-           },
-           "responses": {
-              "200": {
-                 "description": "Success Login admin",
-                 "content": {
-                    "application/json": {
-                       "schema": {
-                          "type": "object",
-                          "properties": {
-                             "code": {
-                                "type": "number"
-                             },
-                             "status": {
-                                "type": "string"
-                             },
-                             "data": {
-                                "$ref": "#/components/schemas/admin"
-                             }
-                          }
-                       }
-                    }
-                 }
-              }
-           }
-        }
-     }
-  },
-  "components": {
-     "schemas": {
-        "user": {
-           "type": "object",
-           "properties": {
-              "userID": {
-                 "type": "number",
-                 "example": "1"
-              },
-              "name": {
-                 "type": "string",
-                 "example": "alta"
-              },
-              "email": {
-                 "type": "string",
-                 "example": "alta@gmal.com"
-              },
-              "password": {
-                 "type": "string",
-                 "example": "123321"
-              },
-              "point": {
-                 "type": "number",
-                 "example": "0"
-              },
-              "date of birth": {
-                 "type": "string",
-                 "example": "01/01/2000"
-              },
-              "account number": {
-                 "type": "number",
-                 "example": "777654"
-              }
-           }
-        },
-        "product": {
-           "type": "object",
-           "properties": {
-              "productID": {
-                 "type": "number",
-                 "example": "1"
-              },
-              "TypeProduct": {
-                 "type": "string",
-                 "example": "Paket Data"
-              },
-              "ProviderName": {
-                 "type": "string",
-                 "example": "Telkomsel"
-              },
-              "ProductName": {
-                 "type": "string",
-                 "example": "paket 10 gb"
-              },
-              "Nominal": {
-                 "type": "number",
-                 "example": "10000"
-              },
-              "Stock": {
-                 "type": "number",
-                 "example": "3"
-              }
-           }
-        },
-        "transaction": {
-           "type": "object",
-           "properties": {
-              "transactionID": {
-                 "type": "number",
-                 "example": "1"
-              },
-              "customerID": {
-                 "type": "number",
-                 "example": "1"
-              },
-              "productID": {
-                 "type": "number",
-                 "example": "1"
-              },
-              "total": {
-                 "type": "number",
-                 "example": "10000"
-              },
-              "point": {
-                 "type": "number",
-                 "example": "10"
-              },
-              "date": {
-                 "type": "number",
-                 "example": "01/01/2022"
-              }
-           }
-        },
-        "redeem": {
-           "type": "object",
-           "properties": {
-              "redeemID": {
-                 "type": "number",
-                 "example": "1"
-              },
-              "customerID": {
-                 "type": "number",
-                 "example": "1"
-              },
-              "type": {
-                 "type": "string",
-                 "example": "cash"
-              },
-              "nominal": {
-                 "type": "number",
-                 "example": "10000"
-              },
-              "point": {
-                 "type": "number",
-                 "example": "10"
-              },
-              "date": {
-                 "type": "number",
-                 "example": "01/01/2022"
-              },
-              "status": {
-                 "type": "string",
-                 "example": "pending"
-              }
-           }
-        },
-        "admin": {
-           "type": "object",
-           "properties": {
-              "email": {
-                 "type": "string",
-                 "example": "admin@admin.com"
-              },
-              "password": {
-                 "type": "string",
-                 "example": "admin123"
-              }
-           }
-        },
-        "Response400": {
-          "description": "Message for invalid process",
-          "properties": {
-            "code": {
-              "type": "integer",
-              "example": 400
-            },
-            "message": {
-              "type": "string",
-              "example": "Bad Request"
-            }
-          }
-        },
-        "Response403": {
-          "description": "Message for invalid process",
-          "properties": {
-            "code": {
-              "type": "integer",
-              "example": 403
-            },
-            "message": {
-              "type": "string",
-              "example": "Forbidden"
-            }
-          }
-        },
-        "Response404": {
-          "description": "Message for invalid process",
-          "properties": {
-            "code": {
-              "type": "integer",
-              "example": 404
-            },
-            "message": {
-              "type": "string",
-              "example": "Not Found"
-            }
-          }
-        },
-        "Response500": {
-          "description": "Message for invalid process",
-          "properties": {
-            "code": {
-              "type": "integer",
-              "example": 500
-            },
-            "message": {
-              "type": "string",
-              "example": "Internal Server Error"
-            }
-          }
-        },
-        "ResponseInvalidLogin": {
-          "description": "Message for invalid login credential",
-          "properties": {
-            "code": {
-              "type": "integer",
-              "example": 401
-            },
-            "message": {
-              "type": "string",
-              "example": "Invalid email or password"
-            }
-          }
-        }
-     }
-  }
+    }
 }
