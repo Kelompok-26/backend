@@ -28,7 +28,7 @@ func InitDB() {
 		DB_Username: "root",
 		DB_Password: "gromizk123",
 		DB_Port:     "3306",
-		DB_Host:     "db",
+		DB_Host:     "localhost",
 		DB_Name:     "c_loyal",
 	}
 
