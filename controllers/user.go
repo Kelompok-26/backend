@@ -10,6 +10,7 @@ import (
 	"strconv"
 
 	"github.com/labstack/echo/v4"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // LOGIN User "POST -> http://127.0.0.1:8080/login"
@@ -17,15 +18,15 @@ func LoginUser(c echo.Context) error {
 	user := models.User{}
 	c.Bind(&user)
 
-	if err := config.DB.Where("PhoneNumber = ? AND password = ?", user.PhoneNumber, user.Password).First(&user).Error; err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-	}
-	if err := config.DB.Where("Email = ? AND password = ?", user.Email, user.Password).First(&user).Error; err != nil {
+	// if err := config.DB.Where("PhoneNumber = ? AND password = ?", user.PhoneNumber, user.Password).First(&user).Error; err != nil {
+	// 	return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	// }
+	if err := config.DB.Where("email = ? OR phone_number = ? AND password = ?", user.Email, user.PhoneNumber, user.Password).First(&user).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	phoneNumber, _ := strconv.Atoi(user.PhoneNumber)
-	token, err := middleware.CreateToken(user.Id, phoneNumber)
+	// phoneNumber, _ := strconv.Atoi(user.PhoneNumber)
+	token, err := middleware.CreateToken(user.Id, user.Email, "user")
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
@@ -49,6 +50,7 @@ func CreateUserControllers(c echo.Context) error {
 	user := models.User{}
 	c.Bind(&user)
 
+	user.Password, _ = CreateHash(user.Password)
 	if err := config.DB.Table("user").Debug().Create(&user).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
@@ -141,4 +143,9 @@ func UpdateUserControllers(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, user)
+}
+
+func CreateHash(password string) (string, error) {
+	hashed, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return string(hashed), err
 }
