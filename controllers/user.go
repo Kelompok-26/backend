@@ -21,7 +21,7 @@ func LoginUser(c echo.Context) error {
 	// if err := config.DB.Where("PhoneNumber = ? AND password = ?", user.PhoneNumber, user.Password).First(&user).Error; err != nil {
 	// 	return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	// }
-	if err := config.DB.Where("email = ? OR phone_number = ? AND password = ?", user.Email, user.PhoneNumber, user.Password).First(&user).Error; err != nil {
+	if err := config.DB.Table("user").Where("email = ? OR phone_number = ? AND password = ?", user.Email, user.PhoneNumber, user.Password).First(&user).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
