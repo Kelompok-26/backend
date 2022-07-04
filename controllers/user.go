@@ -14,7 +14,7 @@ import (
 )
 
 // LOGIN User "POST -> http://127.0.0.1:8080/login"
-func LoginUser(c echo.Context) error {
+func LoginUserController(c echo.Context) error {
 	user := models.User{}
 	c.Bind(&user)
 

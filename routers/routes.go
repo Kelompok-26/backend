@@ -14,7 +14,7 @@ func Router() *echo.Echo {
 	e := echo.New()
 
 	//login
-	e.POST("/user/login", controllers.LoginUser)
+	e.POST("/user/login", controllers.LoginUserController)
 	e.POST("/admin/login", controllers.LoginAdminController)
 
 	// Users
@@ -41,7 +41,7 @@ func Router() *echo.Echo {
 	e.GET("/redeem", controllers.GetAllRedeemControllers)
 	e.GET("/user/redeem/:user_id", controllers.GetRedeemByUserIDControllers)
 	e.POST("/redeem", controllers.CreateRedeemsControllers)
-	e.PUT("/redeem/:id", controllers.UpdateRedeemControllers)
+	e.PUT("/redeem/:id", controllers.UpdateRedeemControllers, eMiddleware.JWT([]byte(constants.SECRET_JWT)))
 	e.DELETE("/redeem/:id", controllers.DeleteRedeemControllers)
 
 	//transaction
