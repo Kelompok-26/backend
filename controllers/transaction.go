@@ -18,11 +18,26 @@ func GetAllTransactionControllers(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, helper.BuildResponse("success get all transaction", transaction))
 }
-
-func GetTransactionIDControllers(c echo.Context) error {
+func GetTransactionByIdControllers(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	transaction := models.Transaction{}
+	transaction := []models.Transaction{}
 	if err := config.DB.Table("transaction").Model(&transaction).Debug().Where("id", id).Preload("User").Preload("Product").Find(&transaction).Error; err != nil {
+		if err.Error() == "record not found" {
+			return c.JSON(http.StatusNotFound, map[string]interface{}{
+				"message": "transaction not found",
+			})
+		}
+
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, helper.BuildResponse("success get transaction", transaction))
+}
+
+func GetTransactionByIdUserControllers(c echo.Context) error {
+	user_id, _ := strconv.Atoi(c.Param("id"))
+	transaction := []models.Transaction{}
+	if err := config.DB.Table("transaction").Model(&transaction).Debug().Where("user_id", user_id).Preload("User").Preload("Product").Find(&transaction).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
 				"message": "transaction not found",
