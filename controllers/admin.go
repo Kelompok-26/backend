@@ -17,7 +17,7 @@ func LoginAdminController(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 	//
-	token, err := middleware.CreateToken(admin.ID, admin.PhoneNumber)
+	token, err := middleware.CreateToken(admin.ID, string(admin.PhoneNumber), "admin")
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
