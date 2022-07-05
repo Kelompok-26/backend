@@ -51,7 +51,7 @@ func Router() *echo.Echo {
 
 	// Transaction
 	eJwt.GET("/transaction", controllers.GetAllTransactionControllers, middleware.AdminRole)
-	eJwt.GET("/user/transaction/:id", controllers.GetTransactionByIdUserControllers)
+	eJwt.GET("/user/transaction/:user_id", controllers.GetTransactionByIdUserControllers)
 	eJwt.GET("/transaction/:id", controllers.GetTransactionByIdControllers)
 	eJwt.POST("/transaction", controllers.CreateTransactionsControllers)
 	eJwt.PUT("/transaction", controllers.UpdatetransactionControllers, middleware.AdminRole)

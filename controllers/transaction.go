@@ -35,12 +35,12 @@ func GetTransactionByIdControllers(c echo.Context) error {
 }
 
 func GetTransactionByIdUserControllers(c echo.Context) error {
-	user_id, _ := strconv.Atoi(c.Param("id"))
+	user_id, _ := strconv.Atoi(c.Param("user_id"))
 	transaction := []models.Transaction{}
-	if err := config.DB.Table("transaction").Model(&transaction).Debug().Where("user_id", user_id).Preload("User").Preload("Product").Find(&transaction).Error; err != nil {
+	if err := config.DB.Model(&transaction).Debug().Where("user_id", user_id).Preload("User").Preload("Product").Find(&transaction).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
-				"message": "transaction not found",
+				"message": "redeem not found",
 			})
 		}
 
