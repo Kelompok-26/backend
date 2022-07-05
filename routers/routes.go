@@ -3,6 +3,7 @@ package routers
 import (
 	"backend/constants"
 	"backend/controllers"
+	"backend/middleware"
 
 	// "backend/middleware"
 
@@ -13,23 +14,27 @@ import (
 func Router() *echo.Echo {
 	e := echo.New()
 
-	//login
+	eJwt := e.Group("/v1")
+	eJwt.Use(eMiddleware.JWT([]byte(constants.SECRET_JWT)))
+
+	
+	// Login
 	e.POST("/user/login", controllers.LoginUserController)
 	e.POST("/admin/login", controllers.LoginAdminController)
 
 	// Users
 	e.POST("/users", controllers.CreateUserControllers)
-	e.GET("/users", controllers.GetAllusercontrollers, eMiddleware.JWT([]byte(constants.SECRET_JWT)))
-	e.GET("/users/:uid", controllers.GetUserControllers)
-	e.PUT("/users/:uid", controllers.UpdateUserControllers)
-	e.DELETE("/users/:uid", controllers.DeleteUserControllers)
-
+	eJwt.GET("/users", controllers.GetAllusercontrollers, middleware.AdminRole)
+	eJwt.GET("/users/:uid", controllers.GetUserControllers)
+	eJwt.PUT("/users/:uid", controllers.UpdateUserControllers)
+	eJwt.DELETE("/users/:uid", controllers.DeleteUserControllers, middleware.AdminRole)
+	
 	// Products
-	e.POST("/products", controllers.CreateProductControllers)
-	e.GET("/products", controllers.GetAllProductControllers, eMiddleware.JWT([]byte(constants.SECRET_JWT)))
-	e.GET("/products/:pid", controllers.GetProductControllers)
-	e.PUT("/products/:pid", controllers.UpdateProductControllers)
-	e.DELETE("/products/:pid", controllers.DeleteProductControllers)
+	eJwt.POST("/products", controllers.CreateProductControllers)
+	eJwt.GET("/products", controllers.GetAllProductControllers, middleware.AdminRole)
+	eJwt.GET("/products/:pid", controllers.GetProductControllers)
+	eJwt.PUT("/products/:pid", controllers.UpdateProductControllers, middleware.AdminRole)
+	eJwt.DELETE("/products/:pid", controllers.DeleteProductControllers, middleware.AdminRole)
 
 	// Spesific Products
 	e.GET("/products/PaketData", controllers.GetPaketData)
@@ -37,20 +42,20 @@ func Router() *echo.Echo {
 	e.GET("/products/Emoney", controllers.GetEmoney)
 	e.GET("/products/Cashout", controllers.GetCashout)
 
-	//transaction
-	e.GET("/redeem", controllers.GetAllRedeemControllers)
-	e.GET("/user/redeem/:user_id", controllers.GetRedeemByUserIDControllers)
-	e.POST("/redeem", controllers.CreateRedeemsControllers)
-	e.PUT("/redeem/:id", controllers.UpdateRedeemControllers, eMiddleware.JWT([]byte(constants.SECRET_JWT)))
-	e.DELETE("/redeem/:id", controllers.DeleteRedeemControllers)
+	// Redeemm
+	eJwt.GET("/redeem", controllers.GetAllRedeemControllers, middleware.AdminRole)
+	eJwt.GET("/user/redeem/:user_id", controllers.GetRedeemByUserIDControllers)
+	eJwt.POST("/redeem", controllers.CreateRedeemsControllers)
+	eJwt.PUT("/redeem/:id", controllers.UpdateRedeemControllers, middleware.AdminRole)
+	eJwt.DELETE("/redeem/:id", controllers.DeleteRedeemControllers, middleware.AdminRole)
 
-	//transaction
-	e.GET("/transaction", controllers.GetAllTransactionControllers)
-	e.GET("/transaction/user/:id", controllers.GetTransactionByIdUserControllers)
-	e.GET("/transaction/:id", controllers.GetTransactionByIdControllers)
-	e.POST("/transaction", controllers.CreateTransactionsControllers)
-	e.PUT("/transaction", controllers.UpdatetransactionControllers)
-	e.DELETE("/transaction", controllers.DeleteTansactionControllers)
+	// Transaction
+	eJwt.GET("/transaction", controllers.GetAllTransactionControllers, middleware.AdminRole)
+	eJwt.GET("/user/transaction/:id", controllers.GetTransactionByIdUserControllers)
+	eJwt.GET("/transaction/:id", controllers.GetTransactionByIdControllers)
+	eJwt.POST("/transaction", controllers.CreateTransactionsControllers)
+	eJwt.PUT("/transaction", controllers.UpdatetransactionControllers, middleware.AdminRole)
+	eJwt.DELETE("/transaction", controllers.DeleteTansactionControllers, middleware.AdminRole)
 
 	return e
 }
