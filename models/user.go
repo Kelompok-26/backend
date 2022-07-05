@@ -13,7 +13,7 @@ type User struct {
 	PhoneNumber   string         `gorm:"column:phone_number" json:"phone_number"`
 	Password      string         `gorm:"column:password" json:"password"`
 	DateofBirth   time.Time      `gorm:"column:date_of_birth" json:"date_of_birth"`
-	Point         int            `gorm:"column:point" json:"point"`
+	Point         int            `gorm:"column:point default:0" json:"point"`
 	AccountNumber string         `gorm:"column:account_number" json:"account_number"`
 	CreatedAt     time.Time      `json:"-"`
 	UpdatedAt     time.Time      `json:"-"`

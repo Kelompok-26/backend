@@ -15,7 +15,7 @@ type Redeem struct {
 	UserId    int         `json:"-"`
 	User      UserPayload `json:"user" gorm:"foreignKey:UserId;references:Id"`
 	Date      time.Time
-	Status    string         `gorm:"column:status" json:"status = Pending" `
+	Status    string         `gorm:"column:status default:pending" json:"status" `
 	CreatedAt time.Time      `json:"-"`
 	UpdatedAt time.Time      `json:"-"`
 	DeletedAt gorm.DeletedAt `gorm:"index"`
