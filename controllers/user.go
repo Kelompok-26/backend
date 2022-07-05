@@ -26,7 +26,7 @@ func LoginUserController(c echo.Context) error {
 	}
 
 	// phoneNumber, _ := strconv.Atoi(user.PhoneNumber)
-	token, err := middleware.CreateToken(user.Id, user.Email, "user")
+	token, err := middleware.CreateToken(user.Id, "user")
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
