@@ -10,10 +10,10 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func CreateToken(id int, PhoneNumber string, role string) (string, error) {
+func CreateToken(id int, role string) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["id"] = id
-	claims["PhoneNumber"] = PhoneNumber
+	claims["role"] = role
 	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -56,7 +56,7 @@ func AdminRole(next echo.HandlerFunc) echo.HandlerFunc {
 		token := GetToken(c)
 		claims, _ := ParseJWT(token)
 		if claims.Role != "admin" {
-			return c.JSON(http.StatusForbidden, "admin")
+			return c.JSON(http.StatusForbidden, "hanya bisa admin")
 		}
 
 		return next(c)
