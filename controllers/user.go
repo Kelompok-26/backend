@@ -108,10 +108,10 @@ func DeleteUserControllers(c echo.Context) error {
 
 // EDIT Spesific User Data "PUT -> http://127.0.0.1:8080/users/:uid"
 func UpdateUserControllers(c echo.Context) error {
-	uid := c.Param("uid")
+	id := c.Param("id")
 	user := models.User{}
 
-	if err := config.DB.Table("user").First(&user, "uid = ?", uid).Error; err != nil {
+	if err := config.DB.Table("user").First(&user, "id = ?", id).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
 				"message": "user not found",
@@ -127,22 +127,16 @@ func UpdateUserControllers(c echo.Context) error {
 	user.Name = newuser.Name
 	user.Email = newuser.Email
 	user.Password = newuser.Password
+	user.Gender = newuser.Gender
 	user.DateofBirth = newuser.DateofBirth
 	user.PhoneNumber = newuser.PhoneNumber
 	user.AccountNumber = newuser.AccountNumber
 	user.Point = newuser.Point
-	if err := config.DB.Table("user").Where("uid = ?", uid).Debug().Save(&user).Debug().Error; err != nil {
+	if err := config.DB.Table("user").Where("id = ?", id).Debug().Save(&user).Debug().Error; err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	fmt.Printf("Isi user setelah bind %#v\n", user)
-	fmt.Printf("Before Update : %#v\n", user)
-	if err := config.DB.Save(&user).Error; err != nil {
-		fmt.Println(err)
-		return c.String(http.StatusInternalServerError, "internal server error") //?
-	}
-
-	return c.JSON(http.StatusOK, user)
+	return c.JSON(http.StatusOK, helper.BuildResponse("success update user", user))
 }
 
 func CreateHash(password string) (string, error) {

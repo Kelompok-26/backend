@@ -26,7 +26,7 @@ func Router() *echo.Echo {
 	e.POST("/users", controllers.CreateUserControllers)
 	eJwt.GET("/users", controllers.GetAllusercontrollers, middleware.AdminRole)
 	eJwt.GET("/users/:uid", controllers.GetUserControllers)
-	eJwt.PUT("/users/:uid", controllers.UpdateUserControllers)
+	eJwt.PUT("/users/:id", controllers.UpdateUserControllers)
 	eJwt.DELETE("/users/:uid", controllers.DeleteUserControllers, middleware.AdminRole)
 	
 	// Products
