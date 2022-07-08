@@ -130,7 +130,7 @@ func UpdateUserControllers(c echo.Context) error {
 	user.PhoneNumber = newuser.PhoneNumber
 	user.AccountNumber = newuser.AccountNumber
 	user.Point = newuser.Point
-	if err := config.DB.Table("user").Where("uid = ?", id).Debug().Save(&user).Debug().Error; err != nil {
+	if err := config.DB.Table("user").Debug().Save(&user).Debug().Error; err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
