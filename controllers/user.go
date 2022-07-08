@@ -5,6 +5,7 @@ import (
 	"backend/helper"
 	"backend/middleware"
 	"backend/models"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -20,7 +21,7 @@ func LoginUserController(c echo.Context) error {
 	// if err := config.DB.Where("PhoneNumber = ? AND password = ?", user.PhoneNumber, user.Password).First(&user).Error; err != nil {
 	// 	return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	// }
-	if err := config.DB.Table("user").Where("email = ? OR phone_number = ? AND password = ?", user.Email, user.PhoneNumber, user.Password).First(&user).Error; err != nil {
+	if err := config.DB.Table("user").Where("email = ? AND password = ?", user.Email, user.Password).First(&user).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
@@ -101,42 +102,81 @@ func DeleteUserControllers(c echo.Context) error {
 	if err := config.DB.Table("user").Delete(&user).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
+	user.Password, _ = CreateHash(user.Password)
 
 	return c.JSON(http.StatusOK, helper.BuildResponse("user deleted successfully", user))
 }
 
-// EDIT Spesific User Data "PUT -> http://127.0.0.1:8080/users/:uid"
+// EDIT Spesific User Data "PUT -> http://127.0.0.1:8080/users/:id"
+
 func UpdateUserControllers(c echo.Context) error {
-	id := c.Param("id")
-	user := models.User{}
-
-	if err := config.DB.Table("user").Where("id", id).Find(&user).Error; err != nil {
-		if err.Error() == "record not found" {
-			return c.JSON(http.StatusNotFound, map[string]interface{}{
-				"message": "user not found",
-			})
-		}
-
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		fmt.Println(err)
+		return c.String(http.StatusBadRequest, "invalid user id!")
+	}
+	fmt.Println("Isi id", id)
+	var user models.User
+	fmt.Printf("Isi user sebelum select %#v\n", user)
+	if err := config.DB.First(&user, id).Error; err != nil {
+		fmt.Println(err)
+		return c.String(http.StatusInternalServerError, "internal server error")
+	}
+	if user.Id == 0 {
+		return c.String(http.StatusNotFound, "user not found")
 	}
 
-	newuser := models.User{}
-	c.Bind(&newuser)
-
-	user.Name = newuser.Name
-	user.Email = newuser.Email
-	user.Password = newuser.Password
-	user.Gender = newuser.Gender
-	user.DateofBirth = newuser.DateofBirth
-	user.PhoneNumber = newuser.PhoneNumber
-	user.AccountNumber = newuser.AccountNumber
-	user.Point = newuser.Point
-	if err := config.DB.Table("user").Where("id", id).Save(&user).Error; err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	fmt.Printf("isi user setelah select %#v\n", user)
+	if err := c.Bind(&user).Error; err != nil {
+		fmt.Println(err)
+		return c.String(http.StatusInternalServerError, "internal server error2")
 	}
 
-	return c.JSON(http.StatusOK, helper.BuildResponse("success update user", user))
+	fmt.Printf("Isi user setelah bind %#v\n", user)
+	fmt.Printf("Before Update : %#v\n", user)
+	if err := config.DB.Save(&user).Error; err != nil {
+		fmt.Println(err)
+		return c.String(http.StatusInternalServerError, "internal server error3") //?
+	}
+	user.Password, _ = CreateHash(user.Password)
+
+	return c.JSON(http.StatusOK, user)
 }
+
+// func UpdateUserControllers(c echo.Context) error {
+// 	id := c.Param("id")
+// 	fmt.Println(id)
+// 	user := models.User{}
+
+// 	if err := config.DB.Table("user").Where("id = ?", id).Find(&user).Error; err != nil {
+// 		if err.Error() == "record not found" {
+// 			return c.JSON(http.StatusNotFound, map[string]interface{}{
+// 				"message": "user not found",
+// 			})
+// 		}
+
+// 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+// 	}
+
+// 	newuser := models.User{}
+// 	c.Bind(&newuser)
+
+// 	user.Id, _ = strconv.Atoi(id)
+// 	fmt.Println(user.Id)
+// 	user.Name = newuser.Name
+// 	user.Email = newuser.Email
+// 	user.Password, _ = CreateHash(newuser.Password)
+// 	user.Gender = newuser.Gender
+// 	user.DateofBirth = newuser.DateofBirth
+// 	user.PhoneNumber = newuser.PhoneNumber
+// 	user.AccountNumber = newuser.AccountNumber
+// 	user.Point = newuser.Point
+// 	if err := config.DB.Table("user").Where("id = ?", id).Debug().Updates(&user).Error; err != nil {
+// 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+// 	}
+
+// 	return c.JSON(http.StatusOK, helper.BuildResponse("success update user", user))
+// }
 
 func CreateHash(password string) (string, error) {
 	hashed, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)

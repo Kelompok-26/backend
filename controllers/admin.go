@@ -13,7 +13,7 @@ func LoginAdminController(c echo.Context) error {
 	admin := models.Admin{}
 	c.Bind(&admin)
 
-	if err := config.DB.Table("admin").Where("phone_number = ? AND password = ?", admin.PhoneNumber, admin.Password).First(&admin).Error; err != nil {
+	if err := config.DB.Table("admin").Where("email = ? AND password = ?", admin.Email, admin.Password).First(&admin).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 	token, err := middleware.CreateToken(admin.Id, "admin")
@@ -22,7 +22,7 @@ func LoginAdminController(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "berhasil login",
-		"Admin":    token,
+		"Admin":   token,
 	})
 
 }

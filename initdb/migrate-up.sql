@@ -2,12 +2,12 @@ create table admin
 (
     id           bigint unsigned auto_increment
         primary key,
-    phone_number longtext null,
+    email longtext null,
     password     longtext null
 );
 
-insert admin (phone_number, password)
-values ('08139820554', 'alta123');
+insert admin (email, password)
+values ('alterra123@hotmail', 'alta123');
 
 create table user
 (
@@ -42,11 +42,15 @@ create table product
     type_product  longtext    null,
     provider_name longtext    null,
     nominal       longtext    null,
+    point         bigint      null,
     stock         bigint      null,
     created_at    datetime(3) null,
     updated_at    datetime(3) null,
     deleted_at    datetime(3) null
 );
+
+insert product (product_name, type_product, provider_name, nominal, stock, created_at, updated_at)
+values ('pulsa 10k', 'pulsa', 'telkomsel', 10000, 200, NOW(), NOW())
 
 create index idx_product_deleted_at
     on product (deleted_at);
