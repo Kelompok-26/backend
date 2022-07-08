@@ -7,7 +7,7 @@ create table admin
 );
 
 insert admin (email, password)
-values ('alterra123@hotmail', 'alta123');
+values ('alterra123@hotmail.com', 'alta123');
 
 create table user
 (
@@ -48,9 +48,6 @@ create table product
     updated_at    datetime(3) null,
     deleted_at    datetime(3) null
 );
-
-insert product (product_name, type_product, provider_name, nominal, stock, created_at, updated_at)
-values ('pulsa 10k', 'pulsa', 'telkomsel', 10000, 200, NOW(), NOW())
 
 create index idx_product_deleted_at
     on product (deleted_at);
