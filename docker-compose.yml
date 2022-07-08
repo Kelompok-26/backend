@@ -14,24 +14,20 @@ services:
 
   db:
     image: bitnami/mysql
-    #test
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d
     restart: unless-stopped
     ports:
       - 3307:3306
     environment:
-      - MYSQL_ROOT_PASSWORD=gromizk123
       - MYSQL_DATABASE=c_loyal
-    volumes:
-      - ./data/db:/var/lib/mysql
+      - MYSQL_ROOT_PASSWORD=gromizk123
     healthcheck:
-      # perintah untuk memastikan bahwa mysql sudah ready
-      test: ["CMD", "mysql", "-u", "root",  "-pgromizk123", "-e", "show schemas"]
-      interval: 10s 
+      test: ["CMD", "mysql", "-u", "root", "-p123456", "-e", "show schemas"]
+      interval: 20s
 
   adminer:
     image: adminer
     restart: unless-stopped
     ports: # host:container
       - 8081:8080
-volumes:
-  dbdata:
