@@ -820,7 +820,7 @@
             "transaction": {
                 "type": "object",
                 "properties": {
-                    "transactionID": {
+                    "transactiouid": {
                         "type": "number",
                         "example": "1"
                     },
