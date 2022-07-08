@@ -52,19 +52,17 @@ create table product
 create index idx_product_deleted_at
     on product (deleted_at);
 
-create table redeem
-(
-    id         bigint unsigned auto_increment
-        primary key,
-    user_id    bigint unsigned null,
-    name       longtext        null,
-    type       tinytext        null,
-    nominal    longtext        null,
-    point      bigint          null,
-    status     mediumtext      null,
-    created_at datetime(3)     null,
-    updated_at datetime(3)     null,
-    deleted_at datetime(3)     null,
+create table redeem (
+    id bigint unsigned auto_increment primary key,
+    user_id bigint unsigned null,
+    name longtext,
+    type tinytext,
+    nominal longtext,
+    point bigint,
+    status mediumtext,
+    created_at    datetime(3) null,
+    updated_at    datetime(3) null,
+    deleted_at    datetime(3) null,
     constraint redeem_ibfk_1
         foreign key (user_id) references user (id)
 );
