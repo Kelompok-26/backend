@@ -22,7 +22,7 @@ func LoginAdminController(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "berhasil login",
-		"User":    token,
+		"Admin":    token,
 	})
 
 }
