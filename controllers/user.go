@@ -89,7 +89,7 @@ func GetUserControllers(c echo.Context) error {
 func DeleteUserControllers(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("uid"))
 	user := models.User{}
-	if err := config.DB.Table("user").Where("id = ?", id).First(&user).Error; err != nil {
+	if err := config.DB.Table("user").First(&user, id).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
 				"message": "user not found",
@@ -99,7 +99,7 @@ func DeleteUserControllers(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	if err := config.DB.Table("user").Where("id = ?", id).Delete(&user).Error; err != nil {
+	if err := config.DB.Table("user").Delete(&user).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
@@ -108,10 +108,9 @@ func DeleteUserControllers(c echo.Context) error {
 
 // EDIT Spesific User Data "PUT -> http://127.0.0.1:8080/users/:uid"
 func UpdateUserControllers(c echo.Context) error {
-	id := c.Param("uid")
+	id, _ := strconv.Atoi(c.Param("uid"))
 	user := models.User{}
-
-	if err := config.DB.Table("user").First(&user, "uid = ?", id).Error; err != nil {
+	if err := config.DB.Table("user").First(&user, id).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
 				"message": "user not found",
@@ -139,7 +138,7 @@ func UpdateUserControllers(c echo.Context) error {
 	fmt.Printf("Before Update : %#v\n", user)
 	if err := config.DB.Save(&user).Error; err != nil {
 		fmt.Println(err)
-		return c.String(http.StatusInternalServerError, "internal server error3") //?
+		return c.String(http.StatusInternalServerError, "internal server error") //?
 	}
 
 	return c.JSON(http.StatusOK, user)
