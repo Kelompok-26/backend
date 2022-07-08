@@ -23,7 +23,7 @@ services:
       - MYSQL_DATABASE=c_loyal
       - MYSQL_ROOT_PASSWORD=gromizk123
     healthcheck:
-      test: ["CMD", "mysql", "-u", "root", "-p123456", "-e", "show schemas"]
+      test: ["CMD", "mysql", "-u", "root", "-pgromizk123", "-e", "show schemas"]
       interval: 20s
 
   adminer:
