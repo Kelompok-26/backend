@@ -5,7 +5,6 @@ import (
 	"backend/helper"
 	"backend/middleware"
 	"backend/models"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -111,7 +110,7 @@ func UpdateUserControllers(c echo.Context) error {
 	id := c.Param("id")
 	user := models.User{}
 
-	if err := config.DB.Table("user").First(&user, "id = ?", id).Error; err != nil {
+	if err := config.DB.Table("user").Where("id", id).Find(&user).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
 				"message": "user not found",
@@ -123,7 +122,7 @@ func UpdateUserControllers(c echo.Context) error {
 
 	newuser := models.User{}
 	c.Bind(&newuser)
-	fmt.Println("user", user)
+
 	user.Name = newuser.Name
 	user.Email = newuser.Email
 	user.Password = newuser.Password
@@ -132,7 +131,7 @@ func UpdateUserControllers(c echo.Context) error {
 	user.PhoneNumber = newuser.PhoneNumber
 	user.AccountNumber = newuser.AccountNumber
 	user.Point = newuser.Point
-	if err := config.DB.Table("user").Where("id = ?", id).Debug().Save(&user).Debug().Error; err != nil {
+	if err := config.DB.Table("user").Where("id", id).Save(&user).Error; err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
