@@ -17,7 +17,6 @@ func Router() *echo.Echo {
 	eJwt := e.Group("/v1")
 	eJwt.Use(eMiddleware.JWT([]byte(constants.SECRET_JWT)))
 
-	
 	// Login
 	e.POST("/user/login", controllers.LoginUserController)
 	e.POST("/admin/login", controllers.LoginAdminController)
@@ -28,7 +27,7 @@ func Router() *echo.Echo {
 	eJwt.GET("/users/:uid", controllers.GetUserControllers)
 	eJwt.PUT("/users/:id", controllers.UpdateUserControllers)
 	eJwt.DELETE("/users/:uid", controllers.DeleteUserControllers, middleware.AdminRole)
-	
+
 	// Products
 	eJwt.POST("/products", controllers.CreateProductControllers)
 	eJwt.GET("/products", controllers.GetAllProductControllers, middleware.AdminRole)
@@ -54,7 +53,7 @@ func Router() *echo.Echo {
 	eJwt.GET("/user/transaction/:user_id", controllers.GetTransactionByIdUserControllers)
 	eJwt.GET("/transaction/:id", controllers.GetTransactionByIdControllers)
 	eJwt.POST("/transaction", controllers.CreateTransactionsControllers)
-	eJwt.PUT("/transaction", controllers.UpdatetransactionControllers, middleware.AdminRole)
+	eJwt.PUT("/transaction/:id", controllers.UpdatetransactionControllers, middleware.AdminRole)
 	eJwt.DELETE("/transaction", controllers.DeleteTansactionControllers, middleware.AdminRole)
 
 	return e
