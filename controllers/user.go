@@ -2,6 +2,8 @@ package controllers
 
 import (
 	"backend/config"
+	"backend/controllers/request"
+	"backend/controllers/response"
 	"backend/helper"
 	"backend/middleware"
 	"backend/models"
@@ -10,7 +12,6 @@ import (
 	"strconv"
 
 	"github.com/labstack/echo/v4"
-	"golang.org/x/crypto/bcrypt"
 )
 
 // LOGIN User "POST -> http://127.0.0.1:8080/login"
@@ -50,7 +51,7 @@ func CreateUserControllers(c echo.Context) error {
 	user := models.User{}
 	c.Bind(&user)
 
-	user.Password, _ = CreateHash(user.Password)
+	user.Password = helper.CreateHash(user.Password)
 	if err := config.DB.Table("user").Debug().Create(&user).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
@@ -82,7 +83,7 @@ func GetUserControllers(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, helper.BuildResponse("success get user", user))
+	return c.JSON(http.StatusOK, helper.BuildResponse("success get user", response.MapToUser(user)))
 }
 
 // Delete User Data "DELETE -> http://127.0.0.1:8080/users/:uid
@@ -102,7 +103,7 @@ func DeleteUserControllers(c echo.Context) error {
 	if err := config.DB.Table("user").Delete(&user).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	user.Password, _ = CreateHash(user.Password)
+	user.Password = helper.CreateHash(user.Password)
 
 	return c.JSON(http.StatusOK, helper.BuildResponse("user deleted successfully", user))
 }
@@ -110,36 +111,58 @@ func DeleteUserControllers(c echo.Context) error {
 // EDIT Spesific User Data "PUT -> http://127.0.0.1:8080/users/:id"
 
 func UpdateUserControllers(c echo.Context) error {
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := strconv.Atoi(c.Param("uid"))
+	fmt.Println(err)
+	user := models.User{}
+
+	if err := config.DB.Table("user").Debug().Where("id", id).Find(&user).Error; err != nil {
+		if err.Error() == "record not found" {
+			return c.JSON(http.StatusNotFound, map[string]interface{}{
+				"message": "user not found",
+			})
+		}
+
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+
+	newreqeust := request.ReqUser{}
+
+	c.Bind(&newreqeust)
+	newuser := newreqeust.MapToDomain()
+
+	if err := config.DB.Table("user").Debug().Where("id", id).Updates(&newuser).Error; err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	fmt.Println(user.Id)
+	newuser.Id = user.Id
+	newuser.Point = user.Point
+	return c.JSON(http.StatusOK, helper.BuildResponse("success update user", response.MapToUser(newuser)))
+}
+
+func AddPointUserController(c echo.Context) error {
+	userId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		fmt.Println(err)
-		return c.String(http.StatusBadRequest, "invalid user id!")
+		return c.String(http.StatusBadRequest, "invalid id")
 	}
-	fmt.Println("Isi id", id)
 	var user models.User
-	fmt.Printf("Isi user sebelum select %#v\n", user)
-	if err := config.DB.First(&user, id).Error; err != nil {
+	var reqUser models.User
+	if err := config.DB.First(&user, userId).Error; err != nil {
 		fmt.Println(err)
-		return c.String(http.StatusInternalServerError, "internal server error")
+		return c.String(http.StatusNotFound, "User not found")
 	}
 	if user.Id == 0 {
-		return c.String(http.StatusNotFound, "user not found")
+		return c.String(http.StatusNotFound, "User not found")
 	}
-
-	fmt.Printf("isi user setelah select %#v\n", user)
-	if err := c.Bind(&user).Error; err != nil {
+	if err := c.Bind(&reqUser); err != nil {
 		fmt.Println(err)
-		return c.String(http.StatusInternalServerError, "internal server error2")
+		return c.String(http.StatusInternalServerError, "Internal Server Error")
 	}
-
-	fmt.Printf("Isi user setelah bind %#v\n", user)
-	fmt.Printf("Before Update : %#v\n", user)
+	user.Point = user.Point + reqUser.Point
 	if err := config.DB.Save(&user).Error; err != nil {
 		fmt.Println(err)
-		return c.String(http.StatusInternalServerError, "internal server error3") //?
+		return c.String(http.StatusInternalServerError, "Internal Server Error")
 	}
-	user.Password, _ = CreateHash(user.Password)
-
 	return c.JSON(http.StatusOK, user)
 }
 
@@ -177,8 +200,3 @@ func UpdateUserControllers(c echo.Context) error {
 
 // 	return c.JSON(http.StatusOK, helper.BuildResponse("success update user", user))
 // }
-
-func CreateHash(password string) (string, error) {
-	hashed, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	return string(hashed), err
-}
