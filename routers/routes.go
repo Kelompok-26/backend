@@ -31,9 +31,9 @@ func Router() *echo.Echo {
 
 	// Products
 	eJwt.POST("/products", controllers.CreateProductControllers)
-	eJwt.GET("/products", controllers.GetAllProductControllers, middleware.AdminRole)
-	eJwt.GET("/products/update/:pid", controllers.GetProductControllers)
-	eJwt.PUT("/products/:pid", controllers.UpdateProductControllers, middleware.AdminRole)
+	e.GET("/products", controllers.GetAllProductControllers)
+	eJwt.GET("/products/:pid", controllers.GetProductControllers, middleware.AdminRole)
+	eJwt.PUT("/products/update/:pid", controllers.UpdateProductControllers, middleware.AdminRole)
 	eJwt.DELETE("/products/:pid", controllers.DeleteProductControllers, middleware.AdminRole)
 
 	// Spesific Products
