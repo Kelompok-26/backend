@@ -4,7 +4,6 @@ import (
 	"backend/config"
 	"backend/helper"
 	"backend/models"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -100,10 +99,10 @@ func GetProductControllers(c echo.Context) error {
 
 // EDIT Product "PUT -> http://127.0.0.1:8080/products/:pid"
 func UpdateProductControllers(c echo.Context) error {
-	id := c.Param("pid")
+	id := c.Param("id")
 	product := models.Product{}
 
-	if err := config.DB.Table("product").First(&product, "pid = ?", id).Error; err != nil {
+	if err := config.DB.Table("product").Where("id", id).Find(&product).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
 				"message": "product not found",
@@ -115,19 +114,28 @@ func UpdateProductControllers(c echo.Context) error {
 
 	newproduct := models.Product{}
 	c.Bind(&newproduct)
-	fmt.Println("product", product)
 	product.TypeProduct = newproduct.TypeProduct
 	product.ProviderName = newproduct.ProviderName
 	product.ProductName = newproduct.ProductName
+	product.Point = newproduct.Point
 	product.Nominal = newproduct.Nominal
 	product.Stock = newproduct.Stock
-	if err := config.DB.Table("product").Where("pid = ?", id).Debug().Save(&product).Debug().Error; err != nil {
+
+	if err := config.DB.Table("product").Where("id", id).Save(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, helper.BuildResponse("success update product", product))
+	return c.JSON(http.StatusOK, helper.BuildResponse("success update redeem", product))
 }
 
+// newproduct := models.Product{}
+// c.Bind(&newproduct)
+// product.TypeProduct = newproduct.TypeProduct
+// product.ProviderName = newproduct.ProviderName
+// product.ProductName = newproduct.ProductName
+// product.Point = newproduct.Point
+// product.Nominal = newproduct.Nominal
+// product.Stock = newproduct.Stock
 // DELETE Product "DELETE -> http://127.0.0.1:8080/products/:pid"
 func DeleteProductControllers(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("pid"))
