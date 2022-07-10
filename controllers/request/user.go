@@ -15,7 +15,7 @@ type ReqUser struct {
 	AccountNumber string `json:"account_number"`
 }
 
-func (user *ReqUser) MapToDomain() models.User {
+func (user *ReqUser) MapToUser() models.User {
 	return models.User{
 		Name:          user.Name,
 		PhoneNumber:   user.PhoneNumber,
