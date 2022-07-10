@@ -13,16 +13,23 @@ import (
 
 func Router() *echo.Echo {
 	e := echo.New()
+
 	e.Use(eMiddleware.CORS())
-	eJwt := e.Group("/v1")
+
+	v1 := e.Group("/v1")
+
+	eJwt := v1.Group("")
+	
+	
+
 	eJwt.Use(eMiddleware.JWT([]byte(constants.SECRET_JWT)))
 
 	// Login
-	e.POST("/user/login", controllers.LoginUserController)
-	e.POST("/admin/login", controllers.LoginAdminController)
+	v1.POST("/user/login", controllers.LoginUserController)
+	v1.POST("/admin/login", controllers.LoginAdminController)
 
 	// Users
-	e.POST("/users", controllers.CreateUserControllers)
+	v1.POST("/users", controllers.CreateUserControllers)
 	eJwt.GET("/users", controllers.GetAllusercontrollers, middleware.AdminRole)
 	eJwt.GET("/users/:uid", controllers.GetUserControllers, middleware.AdminRoleorUserID)
 	eJwt.PUT("/users/update/:uid", controllers.UpdateUserControllers)
@@ -31,16 +38,16 @@ func Router() *echo.Echo {
 
 	// Products
 	eJwt.POST("/products", controllers.CreateProductControllers)
-	e.GET("/products", controllers.GetAllProductControllers)
-	e.GET("/products/:pid", controllers.GetProductControllers)
+	v1.GET("/products", controllers.GetAllProductControllers)
+	v1.GET("/products/:pid", controllers.GetProductControllers)
 	eJwt.PUT("/products/update/:pid", controllers.UpdateProductControllers, middleware.AdminRole)
 	eJwt.DELETE("/products/:pid", controllers.DeleteProductControllers, middleware.AdminRole)
 
 	// Spesific Products
-	e.GET("/products/PaketData", controllers.GetPaketData)
-	e.GET("/products/Pulsa", controllers.GetPulsa)
-	e.GET("/products/Emoney", controllers.GetEmoney)
-	e.GET("/products/Cashout", controllers.GetCashout)
+	v1.GET("/products/PaketData", controllers.GetPaketData)
+	v1.GET("/products/Pulsa", controllers.GetPulsa)
+	v1.GET("/products/Emoney", controllers.GetEmoney)
+	v1.GET("/products/Cashout", controllers.GetCashout)
 
 	// Redeemm
 	eJwt.GET("/redeem", controllers.GetAllRedeemControllers, middleware.AdminRole)
