@@ -15,18 +15,19 @@ type Transaction struct {
 	Product   ProductPayload `json:"product" gorm:"foreignKey:ProductId;references:Id"`
 	Total     int            `gorm:"column:total" json:"total"`
 	Point     int            `gorm:"column:point" json:"point"`
-	Date      time.Time
-	CreatedAt time.Time      `json:"-"`
+	CreatedAt time.Time      `gorm:"column:created_at" json:"created_at"`
 	UpdatedAt time.Time      `json:"-"`
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
 type InsertTransaction struct {
-	Id      int `gorm:"column:id" json:"id"`
-	User    int `json:"user" gorm:"column:user_id"`
-	Product int `json:"product" gorm:"column:product_id"`
-	Total   int `gorm:"column:total" json:"total"`
-	Point   int `gorm:"column:point" json:"point"`
+	Id        int       `gorm:"column:id" json:"id"`
+	User      int       `json:"user" gorm:"column:user_id"`
+	Product   int       `json:"product" gorm:"column:product_id"`
+	Total     int       `gorm:"column:total" json:"total"`
+	Point     int       `gorm:"column:point" json:"point"`
+	CreatedAt time.Time `gorm:"column:created_at" json:"created_at"`
+	UpdatedAt time.Time `gorm:"column:updated_at" json:"updated_at"`
 }
 
 func (Transaction) TableName() string {
