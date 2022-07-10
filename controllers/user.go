@@ -12,21 +12,30 @@ import (
 	"strconv"
 
 	"github.com/labstack/echo/v4"
+	"golang.org/x/crypto/bcrypt"
 )
+
+//login regis not found
+//get user by id JWT
 
 // LOGIN User "POST -> http://127.0.0.1:8080/login"
 func LoginUserController(c echo.Context) error {
 	user := models.User{}
+
 	c.Bind(&user)
+	password := user.Password
 
 	// if err := config.DB.Where("PhoneNumber = ? AND password = ?", user.PhoneNumber, user.Password).First(&user).Error; err != nil {
 	// 	return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	// }
-	if err := config.DB.Table("user").Where("email = ? AND password = ?", user.Email, user.Password).First(&user).Error; err != nil {
+	if err := config.DB.Table("user").Debug().Where("email = ? ", user.Email).First(&user).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-
-	// phoneNumber, _ := strconv.Atoi(user.PhoneNumber)
+	matchPassword := matchPassword(user.Password, []byte(password))
+	if !matchPassword {
+		return c.JSON(http.StatusCreated, helper.BuildResponse("password salah", nil))
+		// phoneNumber, _ := strconv.Atoi(user.PhoneNumber)
+	}
 	token, err := middleware.CreateToken(user.Id, "user")
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
@@ -36,6 +45,14 @@ func LoginUserController(c echo.Context) error {
 		"User":    token,
 	})
 
+}
+
+func matchPassword(hashedPassword string, password []byte) bool {
+	byteHash := []byte(hashedPassword)
+	if err := bcrypt.CompareHashAndPassword(byteHash, password); err != nil {
+		return false
+	}
+	return true
 }
 
 // User Regist "POST -> http://127.0.0.1:8080/users
@@ -48,15 +65,17 @@ func LoginUserController(c echo.Context) error {
 // 		"AccountNumber": ""
 // }
 func CreateUserControllers(c echo.Context) error {
-	user := models.User{}
-	c.Bind(&user)
 
-	user.Password = helper.CreateHash(user.Password)
-	if err := config.DB.Table("user").Debug().Create(&user).Error; err != nil {
+	newreqeust := request.ReqUser{}
+	c.Bind(&newreqeust)
+	newuser := newreqeust.MapToDomain()
+
+	newuser.Password = helper.CreateHash(newuser.Password)
+	if err := config.DB.Table("user").Debug().Create(&newuser).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	return c.JSON(http.StatusCreated, helper.BuildResponse("success create new user", response.MapToUser(user)))
+	return c.JSON(http.StatusCreated, helper.BuildResponse("success create new user", response.MapToUser(newuser)))
 }
 
 //GET All User Data "GET -> http://127.0.0.1:8080/users"
@@ -66,7 +85,7 @@ func GetAllusercontrollers(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, helper.BuildResponse("success get all users", users))
+	return c.JSON(http.StatusOK, helper.BuildResponse("success get all users", response.MapToBatchUser(users)))
 }
 
 // GET Spesific User Data "GET -> http://127.0.0.1:8080/users/:uid"
@@ -105,7 +124,7 @@ func DeleteUserControllers(c echo.Context) error {
 	}
 	user.Password = helper.CreateHash(user.Password)
 
-	return c.JSON(http.StatusOK, helper.BuildResponse("user deleted successfully", user))
+	return c.JSON(http.StatusOK, helper.BuildResponse("user deleted successfully", response.MapToUser(user)))
 }
 
 // EDIT Spesific User Data "PUT -> http://127.0.0.1:8080/users/:id"
