@@ -3,6 +3,7 @@ package middleware
 import (
 	"backend/constants"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -63,3 +64,16 @@ func AdminRole(next echo.HandlerFunc) echo.HandlerFunc {
 	}
 }
 
+func AdminRoleorUserID(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		token := GetToken(c)
+		claims, _ := ParseJWT(token)
+
+		id, _ := strconv.Atoi(c.Param("uid"))
+		if claims.ID != id && claims.Role != "admin" {
+			return c.JSON(http.StatusForbidden, "error, id tidak sama")
+		}
+
+		return next(c)
+	}
+}
