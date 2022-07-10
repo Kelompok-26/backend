@@ -30,3 +30,12 @@ func MapToUser(user models.User) ResUser {
 		AccountNumber: user.AccountNumber,
 	}
 }
+
+func MapToBatchUser(users []models.User) []ResUser {
+	var responses []ResUser
+
+	for _, user := range users {
+		responses = append(responses, MapToUser(user))
+	}
+	return responses
+}
