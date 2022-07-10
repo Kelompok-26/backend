@@ -56,7 +56,7 @@ func CreateUserControllers(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	return c.JSON(http.StatusCreated, helper.BuildResponse("success create new user", user))
+	return c.JSON(http.StatusCreated, helper.BuildResponse("success create new user", response.MapToUser(user)))
 }
 
 //GET All User Data "GET -> http://127.0.0.1:8080/users"
