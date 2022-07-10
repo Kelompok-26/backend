@@ -28,7 +28,7 @@ func LoginUserController(c echo.Context) error {
 	// if err := config.DB.Where("PhoneNumber = ? AND password = ?", user.PhoneNumber, user.Password).First(&user).Error; err != nil {
 	// 	return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	// }
-	if err := config.DB.Table("user").Debug().Where("email = ? ", user.Email).First(&user).Error; err != nil {
+	if err := config.DB.Table("user").Debug().Where("email = ? AND password = ?", user.Email, user.Password).First(&user).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 	matchPassword := matchPassword(user.Password, []byte(password))
@@ -68,7 +68,7 @@ func CreateUserControllers(c echo.Context) error {
 
 	newreqeust := request.ReqUser{}
 	c.Bind(&newreqeust)
-	newuser := newreqeust.MapToDomain()
+	newuser := newreqeust.MapToUser()
 
 	newuser.Password = helper.CreateHash(newuser.Password)
 	if err := config.DB.Table("user").Debug().Create(&newuser).Error; err != nil {
@@ -147,7 +147,7 @@ func UpdateUserControllers(c echo.Context) error {
 	newreqeust := request.ReqUser{}
 
 	c.Bind(&newreqeust)
-	newuser := newreqeust.MapToDomain()
+	newuser := newreqeust.MapToUser()
 
 	if err := config.DB.Table("user").Debug().Where("id", id).Updates(&newuser).Error; err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
