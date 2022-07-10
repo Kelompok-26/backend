@@ -10,7 +10,9 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -25,16 +27,15 @@ func LoginUserController(c echo.Context) error {
 	c.Bind(&user)
 	password := user.Password
 
-	// if err := config.DB.Where("PhoneNumber = ? AND password = ?", user.PhoneNumber, user.Password).First(&user).Error; err != nil {
-	// 	return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-	// }
-	if err := config.DB.Table("user").Debug().Where("email = ? AND password = ?", user.Email, user.Password).First(&user).Error; err != nil {
+	if err := config.DB.Table("user").Debug().Where("email = ?", user.Email).First(&user).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
+	fmt.Println(password)
+	fmt.Println(user.Password)
 	matchPassword := matchPassword(user.Password, []byte(password))
 	if !matchPassword {
 		return c.JSON(http.StatusCreated, helper.BuildResponse("password salah", nil))
-		// phoneNumber, _ := strconv.Atoi(user.PhoneNumber)
+
 	}
 	token, err := middleware.CreateToken(user.Id, "user")
 	if err != nil {
@@ -49,10 +50,8 @@ func LoginUserController(c echo.Context) error {
 
 func matchPassword(hashedPassword string, password []byte) bool {
 	byteHash := []byte(hashedPassword)
-	if err := bcrypt.CompareHashAndPassword(byteHash, password); err != nil {
-		return false
-	}
-	return true
+	err := bcrypt.CompareHashAndPassword(byteHash, password)
+	return err == nil
 }
 
 // User Regist "POST -> http://127.0.0.1:8080/users
@@ -66,9 +65,27 @@ func matchPassword(hashedPassword string, password []byte) bool {
 // }
 func CreateUserControllers(c echo.Context) error {
 
-	newreqeust := request.ReqUser{}
-	c.Bind(&newreqeust)
-	newuser := newreqeust.MapToUser()
+	newrequest := request.ReqNewUser{}
+	c.Bind(&newrequest)
+	newuser := newrequest.MapToNewUser()
+	validate := validator.New()
+	if err := validate.Struct(newrequest); err != nil {
+		var reasons []map[string]string
+		invalids := err.(validator.ValidationErrors)
+		for _, invalid := range invalids {
+			reasons = append(reasons, map[string]string{invalid.Field(): strings.Split(invalid.Error(), "Error:")[1]})
+		}
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+
+	var email string
+	if err := config.DB.Table("user").Select("email").Where("email=?", newuser.Email).Find(&email).Error; err != nil {
+		return err
+	}
+
+	if email != "" {
+		return c.String(http.StatusBadRequest, "email is already registered")
+	}
 
 	newuser.Password = helper.CreateHash(newuser.Password)
 	if err := config.DB.Table("user").Debug().Create(&newuser).Error; err != nil {
