@@ -9,6 +9,9 @@ create table admin
 insert admin (email, password)
 values ('alterra123@hotmail.com', 'alta123');
 
+insert admin (email, password)
+values ('developercloyal@gmail.com', 'Cloyal!@#123');
+
 create table user
 (
     id             bigint unsigned auto_increment
