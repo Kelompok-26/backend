@@ -17,6 +17,7 @@ type ResUser struct {
 	AccountNumber string `json:"account_number"`
 }
 
+
 func MapToUser(user models.User) ResUser {
 	return ResUser{
 		Id:            user.Id,
