@@ -43,7 +43,7 @@ func GetAllProductControllers(c echo.Context) error {
 
 // GET Product Paket Data "GET ->http://127.0.0.1:8080/products/PaketData"
 func GetPaketData(c echo.Context) error {
-	product := []models.Product{}
+	var product []models.Product
 
 	if err := config.DB.Where("type_product", "Paket Data").First(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
@@ -53,7 +53,7 @@ func GetPaketData(c echo.Context) error {
 
 // GET Product Pulsa "GET ->http://127.0.0.1:8080/products/Pulsa"
 func GetPulsa(c echo.Context) error {
-	product := []models.Product{}
+	var product []models.Product
 
 	if err := config.DB.Where("type_product", "Pulsa").First(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
@@ -63,7 +63,7 @@ func GetPulsa(c echo.Context) error {
 
 // GET Product Emoney "GET ->http://127.0.0.1:8080/products/Emoney"
 func GetEmoney(c echo.Context) error {
-	product := []models.Product{}
+	var product []models.Product
 
 	if err := config.DB.Where("type_product", "E-Money").First(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
@@ -73,7 +73,7 @@ func GetEmoney(c echo.Context) error {
 
 // GET Product Cashout "GET ->http://127.0.0.1:8080/products/Cashout"
 func GetCashout(c echo.Context) error {
-	product := []models.Product{}
+	var product []models.Product
 
 	if err := config.DB.Where("type_product", "Cashout").First(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
