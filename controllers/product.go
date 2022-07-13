@@ -122,13 +122,12 @@ func UpdateProductControllers(c echo.Context) error {
 	product.Nominal = newproduct.Nominal
 	product.Stock = newproduct.Stock
 
-	if err := config.DB.Table("products").Where("id", id).Save(&product).Error; err != nil {
+	if err := config.DB.Table("products").Where("id", id).Updates(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, helper.BuildResponse("success update redeem", response.MapToProduct(product)))
+	return c.JSON(http.StatusOK, helper.BuildResponse("success update product", response.MapToProduct(product)))
 }
-
 
 // DELETE Product "DELETE -> http://127.0.0.1:8080/products/:pid"
 func DeleteProductControllers(c echo.Context) error {
