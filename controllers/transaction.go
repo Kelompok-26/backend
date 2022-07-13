@@ -76,33 +76,7 @@ func DeleteTansactionControllers(c echo.Context) error {
 }
 
 // update by id
-func UpdatetransactionControllers(c echo.Context) error {
-	id := c.Param("id")
-	transaction := models.Transaction{}
 
-	if err := config.DB.Table("transaction").Where("id", id).Find(&transaction).Error; err != nil {
-		if err.Error() == "record not found" {
-			return c.JSON(http.StatusNotFound, map[string]interface{}{
-				"message": "transaction not found",
-			})
-		}
-
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-	}
-
-	newtransaction := models.Transaction{}
-	c.Bind(&newtransaction)
-
-	transaction.User = newtransaction.User
-	transaction.Product = newtransaction.Product
-	// transaction.Point = newtransaction.Point
-	// transaction.Total = newtransaction.Total
-	if err := config.DB.Table("transaction").Where("id", id).Save(&transaction).Error; err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-
-	return c.JSON(http.StatusOK, helper.BuildResponse("success update transaction", response.MapToTransaction(transaction)))
-}
 
 func UserCreateTransactionsController(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
