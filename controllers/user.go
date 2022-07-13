@@ -27,11 +27,9 @@ func LoginUserController(c echo.Context) error {
 	c.Bind(&user)
 	password := user.Password
 
-	if err := config.DB.Table("user").Debug().Where("email = ?", user.Email).First(&user).Error; err != nil {
+	if err := config.DB.Table("users").Debug().Where("email = ?", user.Email).First(&user).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	fmt.Println(password)
-	fmt.Println(user.Password)
 	matchPassword := matchPassword(user.Password, []byte(password))
 	if !matchPassword {
 		return c.JSON(http.StatusCreated, helper.BuildResponse("password salah", nil))
@@ -43,9 +41,9 @@ func LoginUserController(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "berhasil login",
+		"User Id": user.Id,
 		"User":    token,
 	})
-
 }
 
 func matchPassword(hashedPassword string, password []byte) bool {
@@ -54,15 +52,7 @@ func matchPassword(hashedPassword string, password []byte) bool {
 	return err == nil
 }
 
-// User Regist "POST -> http://127.0.0.1:8080/users
-// {
-// 		"Name": "",
-// 		"Email": "",
-//		"PhoneNumber": "",
-// 		"Password": "",
-//		"DateoBirth": "",
-// 		"AccountNumber": ""
-// }
+
 func CreateUserControllers(c echo.Context) error {
 
 	newrequest := request.ReqNewUser{}
@@ -79,7 +69,7 @@ func CreateUserControllers(c echo.Context) error {
 	}
 
 	var email string
-	if err := config.DB.Table("user").Select("email").Where("email=?", newuser.Email).Find(&email).Error; err != nil {
+	if err := config.DB.Table("users").Select("email").Where("email=?", newuser.Email).Find(&email).Error; err != nil {
 		return err
 	}
 
@@ -87,8 +77,8 @@ func CreateUserControllers(c echo.Context) error {
 		return c.String(http.StatusBadRequest, "email is already registered")
 	}
 
-	newuser.Password = helper.CreateHash(newuser.Password)
-	if err := config.DB.Table("user").Debug().Create(&newuser).Error; err != nil {
+	// newuser.Password = helper.CreateHash(newuser.Password)
+	if err := config.DB.Table("users").Debug().Create(&newuser).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
@@ -98,7 +88,7 @@ func CreateUserControllers(c echo.Context) error {
 //GET All User Data "GET -> http://127.0.0.1:8080/users"
 func GetAllusercontrollers(c echo.Context) error {
 	var users []models.User
-	if err := config.DB.Table("user").Find(&users).Error; err != nil {
+	if err := config.DB.Table("users").Find(&users).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
@@ -107,9 +97,9 @@ func GetAllusercontrollers(c echo.Context) error {
 
 // GET Spesific User Data "GET -> http://127.0.0.1:8080/users/:uid"
 func GetUserControllers(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("uid"))
+	id, _ := strconv.Atoi(c.Param("id"))
 	user := models.User{}
-	if err := config.DB.Table("user").First(&user, id).Error; err != nil {
+	if err := config.DB.Table("users").First(&user, id).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
 				"message": "user not found",
@@ -126,7 +116,7 @@ func GetUserControllers(c echo.Context) error {
 func DeleteUserControllers(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("uid"))
 	user := models.User{}
-	if err := config.DB.Table("user").First(&user, id).Error; err != nil {
+	if err := config.DB.Table("users").First(&user, id).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
 				"message": "user not found",
@@ -136,7 +126,7 @@ func DeleteUserControllers(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	if err := config.DB.Table("user").Delete(&user).Error; err != nil {
+	if err := config.DB.Table("users").Delete(&user).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 	user.Password = helper.CreateHash(user.Password)
@@ -151,7 +141,7 @@ func UpdateUserControllers(c echo.Context) error {
 	fmt.Println(err)
 	user := models.User{}
 
-	if err := config.DB.Table("user").Debug().Where("id", id).Find(&user).Error; err != nil {
+	if err := config.DB.Table("users").Debug().Where("id", id).Find(&user).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
 				"message": "user not found",
@@ -166,7 +156,7 @@ func UpdateUserControllers(c echo.Context) error {
 	c.Bind(&newreqeust)
 	newuser := newreqeust.MapToUser()
 
-	if err := config.DB.Table("user").Debug().Where("id", id).Updates(&newuser).Error; err != nil {
+	if err := config.DB.Table("users").Debug().Where("id", id).Updates(&newuser).Error; err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 	fmt.Println(user.Id)
@@ -176,63 +166,41 @@ func UpdateUserControllers(c echo.Context) error {
 }
 
 func AddPointUserController(c echo.Context) error {
-	userId, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
+	id, _ := strconv.Atoi(c.Param("id"))
+	pointuser := models.AddPointUser{}
+	if err := c.Bind(&pointuser); err != nil {
 		fmt.Println(err)
-		return c.String(http.StatusBadRequest, "invalid id")
 	}
+
+	// userId, err := strconv.Atoi(c.Param("id"))
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return c.String(http.StatusBadRequest, "invalid id")
+	// }
 	var user models.User
-	var reqUser models.User
-	if err := config.DB.First(&user, userId).Error; err != nil {
+	// var reqUser models.User
+	if err := config.DB.First(&user, id).Error; err != nil {
+
 		fmt.Println(err)
 		return c.String(http.StatusNotFound, "User not found")
 	}
 	if user.Id == 0 {
+
 		return c.String(http.StatusNotFound, "User not found")
 	}
-	if err := c.Bind(&reqUser); err != nil {
-		fmt.Println(err)
-		return c.String(http.StatusInternalServerError, "Internal Server Error")
+	fmt.Println(pointuser.Point)
+	user.Point = user.Point + pointuser.Point
+	fmt.Println(user.Point)
+	if err := config.DB.Table("users").Debug().Where("id", id).Update("point", user.Point).Error; err != nil {
+
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
-	user.Point = user.Point + reqUser.Point
-	if err := config.DB.Save(&user).Error; err != nil {
-		fmt.Println(err)
-		return c.String(http.StatusInternalServerError, "Internal Server Error")
-	}
-	return c.JSON(http.StatusOK, user)
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success add point user",
+		"point":   user.Point,
+	})
+
+
 }
 
-// func UpdateUserControllers(c echo.Context) error {
-// 	id := c.Param("id")
-// 	fmt.Println(id)
-// 	user := models.User{}
-
-// 	if err := config.DB.Table("user").Where("id = ?", id).Find(&user).Error; err != nil {
-// 		if err.Error() == "record not found" {
-// 			return c.JSON(http.StatusNotFound, map[string]interface{}{
-// 				"message": "user not found",
-// 			})
-// 		}
-
-// 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-// 	}
-
-// 	newuser := models.User{}
-// 	c.Bind(&newuser)
-
-// 	user.Id, _ = strconv.Atoi(id)
-// 	fmt.Println(user.Id)
-// 	user.Name = newuser.Name
-// 	user.Email = newuser.Email
-// 	user.Password, _ = CreateHash(newuser.Password)
-// 	user.Gender = newuser.Gender
-// 	user.DateofBirth = newuser.DateofBirth
-// 	user.PhoneNumber = newuser.PhoneNumber
-// 	user.AccountNumber = newuser.AccountNumber
-// 	user.Point = newuser.Point
-// 	if err := config.DB.Table("user").Where("id = ?", id).Debug().Updates(&user).Error; err != nil {
-// 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-// 	}
-
-// 	return c.JSON(http.StatusOK, helper.BuildResponse("success update user", user))
-// }
