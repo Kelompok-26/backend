@@ -68,7 +68,7 @@ func CreateUserControllers(c echo.Context) error {
 	}
 
 	var email string
-	if err := config.DB.Table("users").Select("email").Where("email=?", newuser.Email).Find(&email).Error; err != nil {
+	if err := config.DB.Table("users").Select("email").Where("email=? AND deleted_at is null", newuser.Email).Find(&email).Error; err != nil {
 		return err
 	}
 
@@ -77,10 +77,9 @@ func CreateUserControllers(c echo.Context) error {
 	}
 
 	var phonenumber string
-	if err := config.DB.Table("users").Select("phone_number").Where("phone_number=?", newuser.PhoneNumber).Find(&phonenumber).Error; err != nil {
+	if err := config.DB.Table("users").Select("phone_number").Where("phone_number=? AND deleted_at is null", newuser.PhoneNumber).Find(&phonenumber).Error; err != nil {
 		return err
 	}
-	
 
 	if phonenumber != "" {
 		return c.String(http.StatusBadRequest, "phone number is already registered")
@@ -133,7 +132,6 @@ func DeleteUserControllers(c echo.Context) error {
 
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
-
 
 	if err := config.DB.Table("users").Delete(&user).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
