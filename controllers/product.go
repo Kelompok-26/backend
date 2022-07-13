@@ -43,42 +43,42 @@ func GetAllProductControllers(c echo.Context) error {
 
 // GET Product Paket Data "GET ->http://127.0.0.1:8080/products/PaketData"
 func GetPaketData(c echo.Context) error {
-	product := models.Product{}
+	product := []models.Product{}
 
 	if err := config.DB.Where("type_product", "Paket Data").First(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusOK, helper.BuildResponse("success get all Paket Data", response.MapToProduct(product)))
+	return c.JSON(http.StatusOK, helper.BuildResponse("success get all Paket Data", response.MapToBatchProduct(product)))
 }
 
 // GET Product Pulsa "GET ->http://127.0.0.1:8080/products/Pulsa"
 func GetPulsa(c echo.Context) error {
-	product := models.Product{}
+	product := []models.Product{}
 
 	if err := config.DB.Where("type_product", "Pulsa").First(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusOK, helper.BuildResponse("success get all Pulsa", response.MapToProduct(product)))
+	return c.JSON(http.StatusOK, helper.BuildResponse("success get all Pulsa", response.MapToBatchProduct(product)))
 }
 
 // GET Product Emoney "GET ->http://127.0.0.1:8080/products/Emoney"
 func GetEmoney(c echo.Context) error {
-	product := models.Product{}
+	product := []models.Product{}
 
 	if err := config.DB.Where("type_product", "E-Money").First(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusOK, helper.BuildResponse("success get all E-money", response.MapToProduct(product)))
+	return c.JSON(http.StatusOK, helper.BuildResponse("success get all E-money", response.MapToBatchProduct(product)))
 }
 
 // GET Product Cashout "GET ->http://127.0.0.1:8080/products/Cashout"
 func GetCashout(c echo.Context) error {
-	product := models.Product{}
+	product := []models.Product{}
 
 	if err := config.DB.Where("type_product", "Cashout").First(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusOK, helper.BuildResponse("success get all Cashout", response.MapToProduct(product)))
+	return c.JSON(http.StatusOK, helper.BuildResponse("success get all Cashout", response.MapToBatchProduct(product)))
 }
 
 // GET Spesific Product Data using ID "PUT -> http://127.0.0.1:8080/products/:pid"
