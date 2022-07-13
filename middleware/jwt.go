@@ -69,7 +69,7 @@ func AdminRoleorUserID(next echo.HandlerFunc) echo.HandlerFunc {
 		token := GetToken(c)
 		claims, _ := ParseJWT(token)
 
-		id, _ := strconv.Atoi(c.Param("uid"))
+		id, _ := strconv.Atoi(c.Param("id"))
 		if claims.ID != id && claims.Role != "admin" {
 			return c.JSON(http.StatusForbidden, "error, id tidak sama")
 		}
