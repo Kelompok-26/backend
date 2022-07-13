@@ -13,7 +13,7 @@ func LoginAdminController(c echo.Context) error {
 	admin := models.Admin{}
 	c.Bind(&admin)
 
-	if err := config.DB.Table("admin").Where("email = ? AND password = ?", admin.Email, admin.Password).First(&admin).Error; err != nil {
+	if err := config.DB.Table("admins").Where("email = ? AND password = ?", admin.Email, admin.Password).First(&admin).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 	token, err := middleware.CreateToken(admin.Id, "admin")
