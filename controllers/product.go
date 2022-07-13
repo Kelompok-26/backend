@@ -133,7 +133,7 @@ func UpdateProductControllers(c echo.Context) error {
 func DeleteProductControllers(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("pid"))
 	product := models.Product{}
-	if err := config.DB.Table("products").Where("pid = ?", id).First(&product).Error; err != nil {
+	if err := config.DB.Table("products").Debug().Where("id = ?", id).First(&product).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
 				"message": "product not found",
@@ -143,7 +143,7 @@ func DeleteProductControllers(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	if err := config.DB.Table("products").Where("pid = ?", id).Delete(&product).Error; err != nil {
+	if err := config.DB.Table("products").Debug().Where("id = ?", id).Delete(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
