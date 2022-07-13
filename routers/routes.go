@@ -30,12 +30,12 @@ func Router() *echo.Echo {
 	v1.POST("/users", controllers.CreateUserControllers)
 	eJwt.GET("/users", controllers.GetAllusercontrollers, middleware.AdminRole)
 	eJwt.GET("/users/:id", controllers.GetUserControllers, middleware.AdminRoleorUserID)
-	eJwt.PUT("/users/update/:uid", controllers.UpdateUserControllers)
+	eJwt.PUT("/users/update/:uid", controllers.UpdateUserControllers, middleware.AdminRoleorUserID)
 	eJwt.PUT("/users/:id/point", controllers.AddPointUserController, middleware.AdminRole)
 	eJwt.DELETE("/users/:uid", controllers.DeleteUserControllers, middleware.AdminRole)
 
 	// Products
-	eJwt.POST("/products", controllers.CreateProductControllers)
+	eJwt.POST("/products", controllers.CreateProductControllers, middleware.AdminRole)
 	v1.GET("/products", controllers.GetAllProductControllers)
 	v1.GET("/products/:pid", controllers.GetProductControllers)
 	eJwt.PUT("/products/update/:pid", controllers.UpdateProductControllers, middleware.AdminRole)
@@ -46,7 +46,6 @@ func Router() *echo.Echo {
 	v1.GET("/products/Pulsa", controllers.GetPulsa)
 	v1.GET("/products/E-Money", controllers.GetEmoney)
 	v1.GET("/products/Cashout", controllers.GetCashout)
-
 
 	// Transaction
 	eJwt.GET("/transaction", controllers.GetAllTransactionControllers, middleware.AdminRole)
