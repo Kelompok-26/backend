@@ -53,9 +53,10 @@ func GetPaketData(c echo.Context) error {
 
 // GET Product Pulsa "GET ->http://127.0.0.1:8080/products/Pulsa"
 func GetPulsa(c echo.Context) error {
+	
 	var product []models.Product
 
-	if err := config.DB.Where("type_product", "Pulsa").First(&product).Error; err != nil {
+	if err := config.DB.Where("type_product", "Pulsa").Find(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusOK, helper.BuildResponse("success get all Pulsa", response.MapToBatchProduct(product)))
@@ -65,7 +66,7 @@ func GetPulsa(c echo.Context) error {
 func GetEmoney(c echo.Context) error {
 	var product []models.Product
 
-	if err := config.DB.Where("type_product", "E-Money").First(&product).Error; err != nil {
+	if err := config.DB.Where("type_product", "E-Money").Find(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusOK, helper.BuildResponse("success get all E-money", response.MapToBatchProduct(product)))
@@ -75,7 +76,7 @@ func GetEmoney(c echo.Context) error {
 func GetCashout(c echo.Context) error {
 	var product []models.Product
 
-	if err := config.DB.Where("type_product", "Cashout").First(&product).Error; err != nil {
+	if err := config.DB.Where("type_product", "Cashout").Find(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusOK, helper.BuildResponse("success get all Cashout", response.MapToBatchProduct(product)))
@@ -85,7 +86,7 @@ func GetCashout(c echo.Context) error {
 func GetProductControllers(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("pid"))
 	product := models.Product{}
-	if err := config.DB.Table("products").First(&product, id).Error; err != nil {
+	if err := config.DB.Table("products").Find(&product, id).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
 				"message": "product not found",
