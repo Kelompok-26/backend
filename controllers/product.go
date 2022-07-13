@@ -45,7 +45,7 @@ func GetAllProductControllers(c echo.Context) error {
 func GetPaketData(c echo.Context) error {
 	var product []models.Product
 
-	if err := config.DB.Where("type_product", "Paket Data").First(&product).Error; err != nil {
+	if err := config.DB.Where("type_product", "Paket Data").Find(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusOK, helper.BuildResponse("success get all Paket Data", response.MapToBatchProduct(product)))
@@ -53,7 +53,7 @@ func GetPaketData(c echo.Context) error {
 
 // GET Product Pulsa "GET ->http://127.0.0.1:8080/products/Pulsa"
 func GetPulsa(c echo.Context) error {
-	
+
 	var product []models.Product
 
 	if err := config.DB.Where("type_product", "Pulsa").Find(&product).Error; err != nil {
