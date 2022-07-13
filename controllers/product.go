@@ -129,14 +129,7 @@ func UpdateProductControllers(c echo.Context) error {
 	return c.JSON(http.StatusOK, helper.BuildResponse("success update redeem", response.MapToProduct(product)))
 }
 
-// newproduct := models.Product{}
-// c.Bind(&newproduct)
-// product.TypeProduct = newproduct.TypeProduct
-// product.ProviderName = newproduct.ProviderName
-// product.ProductName = newproduct.ProductName
-// product.Point = newproduct.Point
-// product.Nominal = newproduct.Nominal
-// product.Stock = newproduct.Stock
+
 // DELETE Product "DELETE -> http://127.0.0.1:8080/products/:pid"
 func DeleteProductControllers(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("pid"))
