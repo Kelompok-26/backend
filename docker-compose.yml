@@ -14,8 +14,6 @@ services:
 
   db:
     image: bitnami/mysql
-    volumes:
-      - ./initdb:/docker-entrypoint-initdb.d
     restart: unless-stopped
     ports:
       - 3307:3306
