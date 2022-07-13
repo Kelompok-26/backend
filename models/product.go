@@ -18,13 +18,3 @@ type Product struct {
 	UpdatedAt    time.Time      `json:"-"`
 	DeletedAt    gorm.DeletedAt `gorm:"index"`
 }
-
-type ProductPayload struct {
-	Id           int       `gorm:"column:id" json:"id"`
-	TypeProduct  string    `gorm:"column:type_product" json:"type_product"`
-	ProviderName string    `gorm:"column:provider_name" json:"provider_name"`
-	ProductName  string    `gorm:"column:product_name" json:"product_name"`
-	Nominal      int       `gorm:"column:nominal" json:"nominal"`
-	CreatedAt    time.Time `gorm:"column:created_at" json:"created_at"`
-	UpdatedAt    time.Time `gorm:"column:updated_at" json:"updated_at"`
-}
