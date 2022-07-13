@@ -52,7 +52,6 @@ func matchPassword(hashedPassword string, password []byte) bool {
 	return err == nil
 }
 
-
 func CreateUserControllers(c echo.Context) error {
 
 	newrequest := request.ReqNewUser{}
@@ -77,6 +76,15 @@ func CreateUserControllers(c echo.Context) error {
 		return c.String(http.StatusBadRequest, "email is already registered")
 	}
 
+	var phonenumber string
+	if err := config.DB.Table("users").Select("phone_number").Where("phone_number=?", newuser.PhoneNumber).Find(&phonenumber).Error; err != nil {
+		return err
+	}
+	
+
+	if phonenumber != "" {
+		return c.String(http.StatusBadRequest, "phone number is already registered")
+	}
 	// newuser.Password = helper.CreateHash(newuser.Password)
 	if err := config.DB.Table("users").Debug().Create(&newuser).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
@@ -114,7 +122,7 @@ func GetUserControllers(c echo.Context) error {
 
 // Delete User Data "DELETE -> http://127.0.0.1:8080/users/:uid
 func DeleteUserControllers(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("uid"))
+	id, _ := strconv.Atoi(c.Param("id"))
 	user := models.User{}
 	if err := config.DB.Table("users").First(&user, id).Error; err != nil {
 		if err.Error() == "record not found" {
@@ -123,8 +131,9 @@ func DeleteUserControllers(c echo.Context) error {
 			})
 		}
 
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
+
 
 	if err := config.DB.Table("users").Delete(&user).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
@@ -201,6 +210,4 @@ func AddPointUserController(c echo.Context) error {
 		"point":   user.Point,
 	})
 
-
 }
-
