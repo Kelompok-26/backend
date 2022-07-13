@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"backend/config"
+	"backend/controllers/response"
 	"backend/helper"
 	"backend/models"
 	"net/http"
@@ -23,68 +24,68 @@ func CreateProductControllers(c echo.Context) error {
 	product := models.Product{}
 	c.Bind(&product)
 
-	if err := config.DB.Table("product").Debug().Create(&product).Error; err != nil {
+	if err := config.DB.Table("products").Debug().Create(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	return c.JSON(http.StatusCreated, helper.BuildResponse("success create new product", product))
+	return c.JSON(http.StatusCreated, helper.BuildResponse("success create new product", response.MapToProduct(product)))
 }
 
 // GET All Product Data "GET ->http://127.0.0.1:8080/products"
 func GetAllProductControllers(c echo.Context) error {
 	var products []models.Product
-	if err := config.DB.Table("product").Find(&products).Error; err != nil {
+	if err := config.DB.Table("products").Find(&products).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, helper.BuildResponse("success get all products", products))
+	return c.JSON(http.StatusOK, helper.BuildResponse("success get all products", response.MapToBatchProduct(products)))
 }
 
 // GET Product Paket Data "GET ->http://127.0.0.1:8080/products/PaketData"
 func GetPaketData(c echo.Context) error {
 	product := models.Product{}
 
-	if err := config.DB.Where(product.TypeProduct, "Paket Data").First(&product).Error; err != nil {
+	if err := config.DB.Where("type_product", "Paket Data").First(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusOK, helper.BuildResponse("success get all Paket Data", product))
+	return c.JSON(http.StatusOK, helper.BuildResponse("success get all Paket Data", response.MapToProduct(product)))
 }
 
 // GET Product Pulsa "GET ->http://127.0.0.1:8080/products/Pulsa"
 func GetPulsa(c echo.Context) error {
 	product := models.Product{}
 
-	if err := config.DB.Where(product.TypeProduct, "Pulsa").First(&product).Error; err != nil {
+	if err := config.DB.Where("type_product", "Pulsa").First(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusOK, helper.BuildResponse("success get all Pulsa", product))
+	return c.JSON(http.StatusOK, helper.BuildResponse("success get all Pulsa", response.MapToProduct(product)))
 }
 
 // GET Product Emoney "GET ->http://127.0.0.1:8080/products/Emoney"
 func GetEmoney(c echo.Context) error {
 	product := models.Product{}
 
-	if err := config.DB.Where(product.TypeProduct, "Emoney").First(&product).Error; err != nil {
+	if err := config.DB.Where("type_product", "E-Money").First(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusOK, helper.BuildResponse("success get all E-money", product))
+	return c.JSON(http.StatusOK, helper.BuildResponse("success get all E-money", response.MapToProduct(product)))
 }
 
 // GET Product Cashout "GET ->http://127.0.0.1:8080/products/Cashout"
 func GetCashout(c echo.Context) error {
 	product := models.Product{}
 
-	if err := config.DB.Where(product.TypeProduct, "Cashout").First(&product).Error; err != nil {
+	if err := config.DB.Where("type_product", "Cashout").First(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusOK, helper.BuildResponse("success get all Cashout", product))
+	return c.JSON(http.StatusOK, helper.BuildResponse("success get all Cashout", response.MapToProduct(product)))
 }
 
 // GET Spesific Product Data using ID "PUT -> http://127.0.0.1:8080/products/:pid"
 func GetProductControllers(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("pid"))
 	product := models.Product{}
-	if err := config.DB.Table("product").First(&product, id).Error; err != nil {
+	if err := config.DB.Table("products").First(&product, id).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
 				"message": "product not found",
@@ -94,7 +95,7 @@ func GetProductControllers(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, helper.BuildResponse("success get product", product))
+	return c.JSON(http.StatusOK, helper.BuildResponse("success get product", response.MapToProduct(product)))
 }
 
 // EDIT Product "PUT -> http://127.0.0.1:8080/products/:pid"
@@ -102,7 +103,7 @@ func UpdateProductControllers(c echo.Context) error {
 	id := c.Param("id")
 	product := models.Product{}
 
-	if err := config.DB.Table("product").Where("id", id).Find(&product).Error; err != nil {
+	if err := config.DB.Table("products").Where("id", id).Find(&product).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
 				"message": "product not found",
@@ -121,11 +122,11 @@ func UpdateProductControllers(c echo.Context) error {
 	product.Nominal = newproduct.Nominal
 	product.Stock = newproduct.Stock
 
-	if err := config.DB.Table("product").Where("id", id).Save(&product).Error; err != nil {
+	if err := config.DB.Table("products").Where("id", id).Save(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, helper.BuildResponse("success update redeem", product))
+	return c.JSON(http.StatusOK, helper.BuildResponse("success update redeem", response.MapToProduct(product)))
 }
 
 // newproduct := models.Product{}
@@ -140,7 +141,7 @@ func UpdateProductControllers(c echo.Context) error {
 func DeleteProductControllers(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("pid"))
 	product := models.Product{}
-	if err := config.DB.Table("product").Where("pid = ?", id).First(&product).Error; err != nil {
+	if err := config.DB.Table("products").Where("pid = ?", id).First(&product).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
 				"message": "product not found",
@@ -150,9 +151,9 @@ func DeleteProductControllers(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	if err := config.DB.Table("product").Where("pid = ?", id).Delete(&product).Error; err != nil {
+	if err := config.DB.Table("products").Where("pid = ?", id).Delete(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, helper.BuildResponse("product deleted successfully", product))
+	return c.JSON(http.StatusOK, helper.BuildResponse("product deleted successfully", response.MapToProduct(product)))
 }
