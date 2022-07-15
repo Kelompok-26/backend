@@ -164,23 +164,7 @@ func UpdateUserControllers(c echo.Context) error {
 	newreqeust := request.ReqUser{}
 
 	c.Bind(&newreqeust)
-	var email string
-	if err := config.DB.Table("users").Select("email").Where("email=? AND deleted_at is null", newreqeust.Email).Find(&email).Error; err != nil {
-		return err
-	}
-
-	if email != "" {
-		return c.String(http.StatusBadRequest, "email is already registered")
-	}
-
-	var phonenumber string
-	if err := config.DB.Table("users").Select("phone_number").Where("phone_number=? AND deleted_at is null", newreqeust.PhoneNumber).Find(&phonenumber).Error; err != nil {
-		return err
-	}
-
-	if phonenumber != "" {
-		return c.String(http.StatusBadRequest, "phone number is already registered")
-	}
+	
 	newuser := newreqeust.MapToUser()
 
 	if err := config.DB.Table("users").Debug().Where("id", id).Updates(&newuser).Error; err != nil {
