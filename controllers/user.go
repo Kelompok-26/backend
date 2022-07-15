@@ -32,7 +32,7 @@ func LoginUserController(c echo.Context) error {
 	}
 	matchPassword := matchPassword(user.Password, []byte(password))
 	if !matchPassword {
-		return c.JSON(http.StatusCreated, helper.BuildResponse("password salah", nil))
+		return c.JSON(http.StatusUnauthorized, helper.BuildResponse("password salah", nil))
 
 	}
 	token, err := middleware.CreateToken(user.Id, "user")
@@ -144,7 +144,7 @@ func DeleteUserControllers(c echo.Context) error {
 // EDIT Spesific User Data "PUT -> http://127.0.0.1:8080/users/:id"
 
 func UpdateUserControllers(c echo.Context) error {
-	id, err := strconv.Atoi(c.Param("uid"))
+	id, err := strconv.Atoi(c.Param("id"))
 	fmt.Println(err)
 	user := models.User{}
 
@@ -157,10 +157,30 @@ func UpdateUserControllers(c echo.Context) error {
 
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
+	if user.Id == 0 {
+		return c.String(http.StatusNotFound, "user not found")
+	}
 
 	newreqeust := request.ReqUser{}
 
 	c.Bind(&newreqeust)
+	var email string
+	if err := config.DB.Table("users").Select("email").Where("email=? AND deleted_at is null", newreqeust.Email).Find(&email).Error; err != nil {
+		return err
+	}
+
+	if email != "" {
+		return c.String(http.StatusBadRequest, "email is already registered")
+	}
+
+	var phonenumber string
+	if err := config.DB.Table("users").Select("phone_number").Where("phone_number=? AND deleted_at is null", newreqeust.PhoneNumber).Find(&phonenumber).Error; err != nil {
+		return err
+	}
+
+	if phonenumber != "" {
+		return c.String(http.StatusBadRequest, "phone number is already registered")
+	}
 	newuser := newreqeust.MapToUser()
 
 	if err := config.DB.Table("users").Debug().Where("id", id).Updates(&newuser).Error; err != nil {
