@@ -30,7 +30,7 @@ func Router() *echo.Echo {
 	v1.POST("/users", controllers.CreateUserControllers)
 	eJwt.GET("/users", controllers.GetAllusercontrollers, middleware.AdminRole)
 	eJwt.GET("/users/:id", controllers.GetUserControllers, middleware.AdminRoleorUserID)
-	eJwt.PUT("/users/update/:uid", controllers.UpdateUserControllers, middleware.AdminRoleorUserID)
+	eJwt.PUT("/users/update/:id", controllers.UpdateUserControllers, middleware.AdminRoleorUserID)
 	eJwt.PUT("/users/:id/point", controllers.AddPointUserController, middleware.AdminRole)
 	eJwt.DELETE("/users/:uid", controllers.DeleteUserControllers, middleware.AdminRole)
 
