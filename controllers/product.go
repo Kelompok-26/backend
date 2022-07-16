@@ -23,11 +23,30 @@ import (
 func CreateProductControllers(c echo.Context) error {
 	product := models.Product{}
 	c.Bind(&product)
-
+	var productId int
+	if err := config.DB.Table("products").Select("id").
+	Where("product_name=? AND type_product=? AND provider_name=? AND deleted_at is null", 
+	product.ProductName, product.TypeProduct, product.ProviderName).
+	Find(&productId).Error; err != nil {
+		return err
+	}
+	if productId != 0 {
+		return c.String(http.StatusBadRequest, "already registered")
+	}
 	if err := config.DB.Table("products").Debug().Create(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
+	if product.ProductName == "" {
+		return c.String(http.StatusBadRequest, "product name is nil")
+	}
+	if product.ProviderName == "" {
+		return c.String(http.StatusBadRequest, "provider name is nil")
+	}
 
+	if product.TypeProduct == "" {
+		return c.String(http.StatusBadRequest, "type product is nil")
+	}
+	
 	return c.JSON(http.StatusCreated, helper.BuildResponse("success create new product", response.MapToProduct(product)))
 }
 
@@ -84,7 +103,7 @@ func GetCashout(c echo.Context) error {
 
 // GET Spesific Product Data using ID "PUT -> http://127.0.0.1:8080/products/:pid"
 func GetProductControllers(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("pid"))
+	id, _ := strconv.Atoi(c.Param("id"))
 	product := models.Product{}
 	if err := config.DB.Table("products").Find(&product, id).Error; err != nil {
 		if err.Error() == "record not found" {
@@ -95,6 +114,9 @@ func GetProductControllers(c echo.Context) error {
 
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
+	if product.Id == 0 {
+		return c.String(http.StatusNotFound, "product not found")
+	}
 
 	return c.JSON(http.StatusOK, helper.BuildResponse("success get product", response.MapToProduct(product)))
 }
@@ -104,7 +126,7 @@ func UpdateProductControllers(c echo.Context) error {
 	id := c.Param("id")
 	product := models.Product{}
 
-	if err := config.DB.Table("products").Where("id", id).Find(&product).Error; err != nil {
+	if err := config.DB.Table("products").Debug().Where("id", id).Find(&product).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
 				"message": "product not found",
@@ -123,8 +145,11 @@ func UpdateProductControllers(c echo.Context) error {
 	product.Nominal = newproduct.Nominal
 	product.Stock = newproduct.Stock
 
-	if err := config.DB.Table("products").Where("id", id).Updates(&product).Error; err != nil {
+	if err := config.DB.Table("products").Debug().Where("id", id).Updates(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	if product.Id == 0 {
+		return c.String(http.StatusNotFound, "product not found")
 	}
 
 	return c.JSON(http.StatusOK, helper.BuildResponse("success update product", response.MapToProduct(product)))
