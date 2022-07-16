@@ -23,7 +23,7 @@ func GetAllTransactionControllers(c echo.Context) error {
 }
 func GetTransactionByIdControllers(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	transaction := []models.Transaction{}
+	transaction := models.Transaction{}
 	if err := config.DB.Table("transaction").Model(&transaction).Debug().Where("id", id).Preload("User").Preload("Product").Find(&transaction).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
@@ -33,17 +33,20 @@ func GetTransactionByIdControllers(c echo.Context) error {
 
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
+	if transaction.Id == 0 {
+		return c.String(http.StatusNotFound, "transaction not found")
+	}
 
-	return c.JSON(http.StatusOK, helper.BuildResponse("success get transaction", response.MapToBatchTransaction(transaction)))
+	return c.JSON(http.StatusOK, helper.BuildResponse("success get transaction", response.MapToTransaction(transaction)))
 }
 
 func GetTransactionByIdUserControllers(c echo.Context) error {
-	user_id, _ := strconv.Atoi(c.Param("user_id"))
-	transaction := []models.Transaction{}
+	user_id, _ := strconv.Atoi(c.Param("id"))
+	var transaction []models.Transaction
 	if err := config.DB.Model(&transaction).Debug().Where("user_id", user_id).Preload("User").Preload("Product").Find(&transaction).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
-				"message": "redeem not found",
+				"message": "transaction not found",
 			})
 		}
 
@@ -71,12 +74,14 @@ func DeleteTansactionControllers(c echo.Context) error {
 	if err := config.DB.Table("transaction").Where("id", id).Delete(&transaction).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
+	if transaction.Id == 0 {
+		return c.String(http.StatusNotFound, "transaction not found")
+	}
 
 	return c.JSON(http.StatusOK, helper.BuildResponse("transaction deleted successfully", transaction.Id))
 }
 
 // update by id
-
 
 func UserCreateTransactionsController(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
