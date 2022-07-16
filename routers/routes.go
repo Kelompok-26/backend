@@ -30,7 +30,7 @@ func Router() *echo.Echo {
 	v1.POST("/users", controllers.CreateUserControllers)
 	eJwt.GET("/users", controllers.GetAllusercontrollers, middleware.AdminRole)
 	eJwt.GET("/users/:id", controllers.GetUserControllers, middleware.AdminRoleorUserID)
-	eJwt.PUT("/users/update/:id", controllers.UpdateUserControllers, middleware.AdminRoleorUserID)
+	eJwt.PUT("/users/:id/update", controllers.UpdateUserControllers, middleware.AdminRoleorUserID)
 	eJwt.PUT("/users/:id/point", controllers.AddPointUserController, middleware.AdminRole)
 	eJwt.DELETE("/users/:uid", controllers.DeleteUserControllers, middleware.AdminRole)
 
@@ -49,7 +49,7 @@ func Router() *echo.Echo {
 
 	// Transaction
 	eJwt.GET("/transaction", controllers.GetAllTransactionControllers, middleware.AdminRole)
-	eJwt.GET("/user/transaction/:user_id", controllers.GetTransactionByIdUserControllers, middleware.AdminRoleorUserID)
+	eJwt.GET("/user/:id/transactions", controllers.GetTransactionByIdUserControllers, middleware.AdminRoleorUserID)
 	eJwt.GET("/transaction/:id", controllers.GetTransactionByIdControllers, middleware.AdminRole)
 	eJwt.POST("/user/:id/transaction", controllers.UserCreateTransactionsController, middleware.AdminRoleorUserID)
 	eJwt.DELETE("/transaction/:id", controllers.DeleteTansactionControllers, middleware.AdminRole)
