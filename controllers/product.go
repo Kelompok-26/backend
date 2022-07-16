@@ -126,6 +126,7 @@ func UpdateProductControllers(c echo.Context) error {
 	id := c.Param("id")
 	product := models.Product{}
 
+
 	if err := config.DB.Table("products").Debug().Where("id", id).Find(&product).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{
@@ -144,7 +145,18 @@ func UpdateProductControllers(c echo.Context) error {
 	product.Point = newproduct.Point
 	product.Nominal = newproduct.Nominal
 	product.Stock = newproduct.Stock
-
+	
+	var productId int
+	if err := config.DB.Table("products").Select("id").
+	Where("product_name=? AND type_product=? AND provider_name=? AND deleted_at is null", 
+	product.ProductName, product.TypeProduct, product.ProviderName).
+	Find(&productId).Error; err != nil {
+		return err
+	}
+	if productId != 0 {
+		return c.String(http.StatusBadRequest, "already registered")
+	}
+	
 	if err := config.DB.Table("products").Debug().Where("id", id).Updates(&product).Error; err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
