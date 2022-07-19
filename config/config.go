@@ -1,6 +1,7 @@
 package config
 
 import (
+	"backend/models"
 	"fmt"
 
 	"gorm.io/driver/mysql"
@@ -11,7 +12,7 @@ var DB *gorm.DB
 
 func IntialDatabase() {
 	InitDB()
-	// InitMigrate()
+	InitMigrate()
 }
 
 type Config struct {
@@ -47,9 +48,9 @@ func InitDB() {
 	}
 }
 
-// func InitMigrate() {
-// 	DB.AutoMigrate(&models.User{})
-// 	DB.AutoMigrate(&models.Product{})
-// 	DB.AutoMigrate(&models.Admin{})
-// 	DB.AutoMigrate(&models.Redeem{})
-// }
+func InitMigrate() {
+	DB.AutoMigrate(&models.Admin{})
+	DB.AutoMigrate(&models.Product{})
+	DB.AutoMigrate(&models.Transaction{})
+	DB.AutoMigrate(&models.User{})
+}

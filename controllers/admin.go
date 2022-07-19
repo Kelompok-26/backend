@@ -13,18 +13,16 @@ func LoginAdminController(c echo.Context) error {
 	admin := models.Admin{}
 	c.Bind(&admin)
 
-	if err := config.DB.Where("nomor_hp = ? AND password = ?", admin.PhoneNumber, admin.Password).First(&admin).Error; err != nil {
+	if err := config.DB.Table("admins").Where("email = ? AND password = ?", admin.Email, admin.Password).First(&admin).Error; err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	//
-	token, err := middleware.CreateToken(admin.ID, admin.PhoneNumber)
+	token, err := middleware.CreateToken(admin.Id, "admin")
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "berhasil login",
-		"admin":   token,
+		"Admin":   token,
 	})
+
 }
-
-

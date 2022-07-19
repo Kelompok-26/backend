@@ -9,30 +9,17 @@ import (
 //history transaction point (- userid, productid)
 type Transaction struct {
 	Id        int            `gorm:"column:id" json:"id"`
-	UserId    int            `json:"-"`
-	ProductId int            `json:"-"`
-	User      UserPayload    `json:"user" gorm:"foreignKey:UserId;references:Id"`
-	Product   ProductPayload `json:"product" gorm:"foreignKey:ProductId;references:Id"`
-	Total     int            `gorm:"column:total" json:"total"`
-	Point     int            `gorm:"column:point" json:"point"`
-	Date      time.Time
-	CreatedAt time.Time      `json:"-"`
+	UserId    int            `json:"user_id"`
+	ProductId int            `json:"product_id"`
+	User      User           `json:"user" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	Product   Product        `json:"product" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	Number    string         `json:"number"`
+	CreatedAt time.Time      `gorm:"column:created_at" json:"created_at"`
 	UpdatedAt time.Time      `json:"-"`
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
-type InsertTransaction struct {
-	Id      int `gorm:"column:id" json:"id"`
-	User    int `json:"user" gorm:"column:user_id"`
-	Product int `json:"product" gorm:"column:product_id"`
-	Total   int `gorm:"column:total" json:"total"`
-	Point   int `gorm:"column:point" json:"point"`
-}
 
 func (Transaction) TableName() string {
 	return "transaction"
-}
-
-func (ProductPayload) TableName() string {
-	return "product"
 }
